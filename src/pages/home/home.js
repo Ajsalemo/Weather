@@ -39,7 +39,8 @@ const styles = theme => ({
     },
     textField: {
         height: 50,
-        flexBasis: '50%'
+        flexBasis: '50%',
+        backgroundColor: 'rgba(167, 217, 227, 0.53)'
     },
     gridTwo: {
         height: '100%'
