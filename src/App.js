@@ -1,5 +1,8 @@
+/* eslint-disable import/first */
 // -------------------------------------------- Imports -------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
+// Dotenv for .env variables
+require('dotenv').config()
 
 import React from 'react';
 import { Provider } from 'react-redux'
