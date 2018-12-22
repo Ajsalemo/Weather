@@ -6,12 +6,18 @@ import React from 'react';
 // Container
 import RouteContainer from './route-container';
 
+// Base styles
+import CssBaseline from '@material-ui/core/CssBaseline';
+
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
 const App = () => {
     return (
+      <React.Fragment>
+        <CssBaseline />
         <RouteContainer />
+      </React.Fragment>
     )
 };
 
