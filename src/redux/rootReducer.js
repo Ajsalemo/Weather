@@ -1,39 +1,24 @@
 // -------------------------------------------- Imports -------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
-import React from 'react';
-import { Provider } from 'react-redux'
-import { PersistGate } from 'redux-persist/integration/react'
+import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 
-// Redux
-import { store, persistor } from './redux/store';
-
-// Container
-import RouteContainer from './route-container';
-
-// Base styles
-import CssBaseline from '@material-ui/core/CssBaseline';
+// Reducer
+import weatherData from './reducer';
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
-const App = () => {
-    return (
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <React.Fragment>
-            <CssBaseline />
-            <RouteContainer />
-          </React.Fragment>
-        </PersistGate>
-      </Provider>
-    )
-};
+const rootReducer = combineReducers({
+    weatherData,
+    form: formReducer
+})
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
-export default App;
+export default rootReducer;
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //

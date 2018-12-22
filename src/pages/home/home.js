@@ -6,15 +6,14 @@ import React from 'react';
 // Material UI components
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
-import { Search } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 
 // Images
 import background1 from '../../images/background1.jpg';
+
+// Components
+import SearchBar from '../../components/searchbar';
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
@@ -30,17 +29,6 @@ const styles = theme => ({
         backgroundPosition: 'bottom',
         width: 'auto',
         height: 650
-    },
-    form: {
-        display: 'flex',
-        alignItems: 'center',
-        marginLeft: '4em',
-        height: 'inherit'
-    },
-    textField: {
-        height: 50,
-        flexBasis: '50%',
-        backgroundColor: 'rgba(167, 217, 227, 0.53)'
     },
     gridTwo: {
         height: '100%'
@@ -74,24 +62,7 @@ const Home = props => {
                             {<span className={classes.subTitle} style={{display: 'block'}}>Your personal application</span>}
                         </Typography>
                     </Grid>
-                    <form className={classes.form}>
-                        <TextField
-                            variant="filled"
-                            className={classes.textField}
-                            InputProps={{
-                                endAdornment: (
-                                  <InputAdornment variant="filled" position="end">
-                                    <IconButton
-                                      aria-label="Submit form"
-                                      style={{color: '#fff'}}
-                                    >
-                                        <Search />
-                                    </IconButton>
-                                  </InputAdornment>
-                                ),
-                              }}
-                        />
-                    </form>
+                    <SearchBar />
                 </Grid>
             </Grid>
             <Paper>

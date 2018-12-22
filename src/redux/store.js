@@ -1,39 +1,32 @@
 // -------------------------------------------- Imports -------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
-import React from 'react';
-import { Provider } from 'react-redux'
-import { PersistGate } from 'redux-persist/integration/react'
+import { createStore, applyMiddleware, compose  } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import thunk from 'redux-thunk';
 
-// Redux
-import { store, persistor } from './redux/store';
-
-// Container
-import RouteContainer from './route-container';
-
-// Base styles
-import CssBaseline from '@material-ui/core/CssBaseline';
+// Root reducer
+import rootReducer from './rootReducer';
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
-const App = () => {
-    return (
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <React.Fragment>
-            <CssBaseline />
-            <RouteContainer />
-          </React.Fragment>
-        </PersistGate>
-      </Provider>
-    )
+const persistConfig = {
+    key: 'root',
+    storage,
 };
 
-// ------------------------------------------------------------------------------------------------------- //
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 // ------------------------------------------------------------------------------------------------------- //
 
-export default App;
+export let store = createStore(
+    persistedReducer,
+    composeEnhancers(applyMiddleware(thunk))
+);
+export let persistor = persistStore(store);
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
