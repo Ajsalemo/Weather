@@ -18,17 +18,19 @@ import { withStyles } from '@material-ui/core';
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
-const styles = () => ({
+const styles = theme => ({
     form: {
         display: 'flex',
         alignItems: 'center',
-        marginLeft: '4em',
-        height: 'inherit'
+        marginLeft: '4em'
     },
     textField: {
         height: 50,
-        flexBasis: '50%',
-        backgroundColor: 'rgba(167, 217, 227, 0.53)'
+        flexBasis: '75%',
+        backgroundColor: 'rgba(167, 217, 227, 0.53)',
+        [theme.breakpoints.up('sm')]: {
+            flexBasis: '50%'
+          }
     }
 });
   
@@ -87,7 +89,7 @@ class SearchBar extends Component {
                     name="searchbar" 
                     component={this.renderTextField} 
                     placeholder="Ex. - Charlotte, US or Paris, FR"
-                    label="Enter a location to view it's weather forecast" 
+                    label="Enter a location" 
                     classes={classes.textField}
                 />
             </form>

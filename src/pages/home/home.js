@@ -14,6 +14,7 @@ import background1 from '../../images/background1.jpg';
 
 // Components
 import SearchBar from '../../components/searchbar';
+import Location from '../../components/location';
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
@@ -30,8 +31,10 @@ const styles = theme => ({
         width: 'auto',
         height: 650
     },
-    gridTwo: {
-        height: '100%'
+    locationGrid: {
+        [theme.breakpoints.up('sm')]: {
+            justifyContent: 'flex-end'
+          }
     },
     typography: {
         color: '#fff',
@@ -53,17 +56,41 @@ const Home = props => {
     const { classes } = props;
     return (
         <div className={classes.container}>
+            {/* ---------------------------------------- Main Grid Container ------------------------------------------------------ */}
             <Grid container className={classes.hero}>
+                {/* ---------------------------------------- Main Item Container ------------------------------------------------------ */}
                 <Grid item md={12} xs={12} style={{height: '100%'}}>
+                    {/* ----------------------------------------- Hero Component --------------------------------------- */}
                     <Grid item md={12} xs={12}>
                         <Typography component="h2" variant="h1" className={classes.typography}>
-                            Weather
-                            {<span className={classes.subTitle}>.App</span>}
+                            <span>Weather{<span className={classes.subTitle}>.App</span>}</span>
                             {<span className={classes.subTitle} style={{display: 'block'}}>Your personal application</span>}
                         </Typography>
+                    {/* ------------------------------------------- End Hero Component --------------------------------- */}
                     </Grid>
+                    {/* --------------------------------------- Card Container ------------------------------------------- */}
+                    <Grid 
+                        direction='row'
+                        container
+                        style={{padding: '6em'}}
+                        className={classes.locationGrid}
+                    >
+                        {/* ----------------------------------------- Card Item Grid --------------------------------------- */}
+                        <Grid 
+                            item
+                            md={4}
+                        >
+                          <Location />
+                        {/* ----------------------------------------- End Card Item Grid --------------------------------------- */}
+                        </Grid>
+                    {/* --------------------------------------- End Card Container ------------------------------------------- */}
+                    </Grid>
+                    {/* ------------------------------------------ Search Component ------------------------------------------- */}
                     <SearchBar />
+                    {/* ------------------------------------------------------------------------------------------------------- */}
+                {/* ---------------------------------------- End Main Item Container -------------------------------------------- */}
                 </Grid>
+            {/* ---------------------------------------- End Main Container ------------------------------------------------------ */}
             </Grid>
             <Paper>
                 <Grid item md={12}>
