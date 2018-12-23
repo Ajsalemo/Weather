@@ -72,7 +72,7 @@ const Home = props => {
                     <Grid 
                         direction='row'
                         container
-                        style={{padding: '6em'}}
+                        style={{padding: `5em 5em 1em 5em`}}
                         className={classes.locationGrid}
                     >
                         {/* ----------------------------------------- Card Item Grid --------------------------------------- */}

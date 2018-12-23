@@ -8,6 +8,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardHeader from '@material-ui/core/CardHeader';
+import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core';
 
 // Images
@@ -44,6 +45,9 @@ const Location = props => {
                     image={Sun}
                 />
             </CardActionArea>
+            <Typography gutterBottom variant="h3" component="h2">
+                52&deg; | Sunny
+            </Typography>
         </Card>
     )
 };
