@@ -55,6 +55,7 @@ let Location = props => {
                     alt="weather"
                     title={description}
                     image={imageIcon}
+                    style={{width: '50%'}}
                 />
             </CardActionArea>
             <Typography gutterBottom variant="h3" component="h2" style={{paddingLeft: '0.3em'}}>
