@@ -6,16 +6,11 @@ import { SUBMIT_REQUEST } from './types';
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
-const initialState = {};
-
-// ------------------------------------------------------------------------------------------------------- //
-
-const weatherData = (state = initialState, action) => {
+const weatherData = (state = {}, action) => {
     switch (action.type) {
         case SUBMIT_REQUEST:
             return {
-                ...state,
-                initialState: action.payload
+                information: action.payload
             }
     
         default:

@@ -2,6 +2,9 @@
 // ------------------------------------------------------------------------------------------------------- //
 
 import React from 'react';
+import { connect } from 'react-redux';
+import moment from 'moment';
+
 
 // Material UI components
 import Card from '@material-ui/core/Card';
@@ -13,6 +16,9 @@ import { withStyles } from '@material-ui/core';
 
 // Images
 import Sun from '../../images/Sun.png';
+
+// Actions
+import { submitSearchLocation } from '../../redux/actions';
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
@@ -29,30 +35,38 @@ const styles = theme => ({
 // ------------------------------------------------------------------------------------------------------- //
 
 
-const Location = props => {
-    const { classes } = props;
+let Location = props => {
+    const { classes, description, name, country, temperature } = props;
     return (
         <Card className={classes.cardContainer}>
             <CardHeader
-                title="Hemby Bridge, NC"
-                subheader="Sunday, 12/13/18"
+                title={`${name}, ${country}`}
+                subheader={moment().format('MMMM Do YYYY, h:mm a')}
             />
             <CardActionArea>
                 <CardMedia 
                     component="img"
                     alt="weather"
-                    title="Sunny"
+                    title={description}
                     image={Sun}
                 />
             </CardActionArea>
             <Typography gutterBottom variant="h3" component="h2">
-                52&deg; | Sunny
+                <span style={{display: 'block'}}>{temperature}&deg;</span> 
+                <span style={{display: 'block'}}>{description}</span>
             </Typography>
         </Card>
     )
 };
 
 // ------------------------------------------------------------------------------------------------------- //
+// ------------------------------------------------------------------------------------------------------- //
+
+Location = connect(
+    null,
+    { submitSearchLocation }
+)(Location);
+
 // ------------------------------------------------------------------------------------------------------- //
 
 export default withStyles(styles)(Location);

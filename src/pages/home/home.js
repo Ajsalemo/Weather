@@ -2,6 +2,10 @@
 // ------------------------------------------------------------------------------------------------------- //
 
 import React from 'react';
+import { connect } from 'react-redux';
+
+// Actions
+import { submitSearchLocation } from '../../redux/actions';
 
 // Material UI components
 import Paper from '@material-ui/core/Paper';
@@ -52,8 +56,16 @@ const styles = theme => ({
 
 // ------------------------------------------------------------------------------------------------------- //
 
-const Home = props => {
-    const { classes } = props;
+const returnRoundedNumber = temp => {
+    return (
+        parseInt(Math.round(`${temp}`))
+    )
+};
+
+// ------------------------------------------------------------------------------------------------------- //
+
+let Home = props => {
+    const { classes, weatherData } = props;
     return (
         <div className={classes.container}>
             {/* ---------------------------------------- Main Grid Container ------------------------------------------------------ */}
@@ -80,7 +92,12 @@ const Home = props => {
                             item
                             md={4}
                         >
-                          <Location />
+                          <Location 
+                            description={weatherData.data.weather[0].main}
+                            name={weatherData.data.name}
+                            country={weatherData.data.sys.country}
+                            temperature={returnRoundedNumber(weatherData.data.main.temp)}
+                          />
                         {/* ----------------------------------------- End Card Item Grid --------------------------------------- */}
                         </Grid>
                     {/* --------------------------------------- End Card Container ------------------------------------------- */}
@@ -101,6 +118,20 @@ const Home = props => {
 };
 
 // ------------------------------------------------------------------------------------------------------- //
+// ------------------------------------------------------------------------------------------------------- //
+const mapStateToProps = state => {
+    return {
+        weatherData: state.weatherData.information
+    }
+}
+
+// ------------------------------------------------------------------------------------------------------- //
+
+Home = connect(
+    mapStateToProps,
+    { submitSearchLocation }
+)(Home);
+
 // ------------------------------------------------------------------------------------------------------- //
 
 export default withStyles(styles)(Home);
