@@ -84,7 +84,7 @@ let Home = props => {
                     <Grid 
                         direction='row'
                         container
-                        style={{padding: `5em 5em 1em 5em`}}
+                        style={{padding: `1.7em 5em 1em 5em`}}
                         className={classes.locationGrid}
                     >
                         {/* ----------------------------------------- Card Item Grid --------------------------------------- */}
@@ -97,6 +97,9 @@ let Home = props => {
                             name={weatherData.data.name}
                             country={weatherData.data.sys.country}
                             temperature={returnRoundedNumber(weatherData.data.main.temp)}
+                            wind={returnRoundedNumber(weatherData.data.wind.speed)}
+                            humidity={weatherData.data.main.humidity}
+                            imageIcon={`http://openweathermap.org/img/w/${weatherData.data.weather[0].icon}.png`}
                           />
                         {/* ----------------------------------------- End Card Item Grid --------------------------------------- */}
                         </Grid>
