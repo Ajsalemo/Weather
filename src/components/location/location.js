@@ -41,13 +41,15 @@ let Location = props => {
         temperature, 
         wind,
         humidity,
-        imageIcon
+        imageIcon,
+        // Value passed in from the parent component(Home)
+        forecastCard
     } = props;
     return (
-        <Card className={classes.cardContainer}>
+        <Card className={`${classes.cardContainer} ${forecastCard}`}>
             <CardHeader
-                title={`${name}, ${country}`}
-                subheader={moment().format('MMMM Do YYYY, h:mm a')}
+                title={ name || country ? `${name}, ${country}` : null }
+                subheader={ name || country ? moment().format('MMMM Do YYYY, h:mm a') : null }
             />
             <CardActionArea>
                 <CardMedia 
@@ -58,13 +60,25 @@ let Location = props => {
                     style={{width: '50%'}}
                 />
             </CardActionArea>
+            {/* If there isn't wind/humidity values being passed in(due to this component being used a 5 day forecast) */}
+            {/* Display smaller and minimal text(for 5 day forecast component) */}
+            {!wind || !humidity 
+                ? 
+            <Typography gutterBottom variant="body2" style={{paddingLeft: '0.3em'}}>
+                <span style={{display: 'block'}}>{temperature}&deg;</span> 
+                <span style={{display: 'block'}}>{description}</span>
+            </Typography>
+                :
+            // Else if all values are being passed into the component(Being used at the main component/current weather)
+            // Display normal, hero based text
             <Typography gutterBottom variant="h3" component="h2" style={{paddingLeft: '0.3em'}}>
                 <span style={{display: 'block'}}>{temperature}&deg;</span> 
                 <span style={{display: 'block'}}>{description}</span>
             </Typography>
+            }
             <Typography gutterBottom variant="body2" style={{paddingLeft: '1em'}}>
-                <span style={{display: 'block'}}>Wind speed: {wind}mph</span> 
-                <span style={{display: 'block'}}>Humidity: {humidity}%</span>
+                { wind ? <span style={{display: 'block'}}>Wind speed: {wind}mph</span> : null } 
+                { humidity ? <span style={{display: 'block'}}>Humidity: {humidity}%</span> : null }
             </Typography>
         </Card>
     )

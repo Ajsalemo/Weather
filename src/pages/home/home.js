@@ -33,7 +33,7 @@ const styles = theme => ({
         backgroundImage: `url(${background1})`,
         backgroundPosition: 'bottom',
         width: 'auto',
-        height: 650
+        height: 600
     },
     locationGrid: {
         [theme.breakpoints.up('sm')]: {
@@ -51,6 +51,15 @@ const styles = theme => ({
         ...theme.typography.button,
         color: '#03a9f4',
         textShadow: `1px 1px 1px #000`
+    },
+    forecastGrid: {
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        backgroundColor: '#c1eff4'
+    },
+    forecastCard: {
+        width: '5em',
+        height: 'fit-content'
     }
 });
 
@@ -92,15 +101,20 @@ let Home = props => {
                             item
                             md={4}
                         >
-                          <Location 
-                            description={weatherData.data.weather[0].main}
-                            name={weatherData.data.name}
-                            country={weatherData.data.sys.country}
-                            temperature={returnRoundedNumber(weatherData.data.main.temp)}
-                            wind={returnRoundedNumber(weatherData.data.wind.speed)}
-                            humidity={weatherData.data.main.humidity}
-                            imageIcon={`http://openweathermap.org/img/w/${weatherData.data.weather[0].icon}.png`}
-                          />
+                        {weatherData 
+                            ?
+                        <Location 
+                            description={weatherData.data.list[0].weather[0].main}
+                            name={weatherData.data.city.name}
+                            country={weatherData.data.city.country}
+                            temperature={returnRoundedNumber(weatherData.data.list[0].main.temp)}
+                            wind={returnRoundedNumber(weatherData.data.list[0].wind.speed)}
+                            humidity={weatherData.data.list[0].main.humidity}
+                            imageIcon={`http://openweathermap.org/img/w/${weatherData.data.list[0].weather[0].icon}.png`}
+                        />
+                            :
+                        null
+                        }          
                         {/* ----------------------------------------- End Card Item Grid --------------------------------------- */}
                         </Grid>
                     {/* --------------------------------------- End Card Container ------------------------------------------- */}
@@ -112,10 +126,29 @@ let Home = props => {
                 </Grid>
             {/* ---------------------------------------- End Main Container ------------------------------------------------------ */}
             </Grid>
-            <Paper>
-                <Grid item md={12}>
+            <Grid container>
+                <Grid item md={12} className={classes.forecastGrid}>
+                    {weatherData 
+                        ?
+                        // Loop over nested objects returned from the API
+                        Object.values(weatherData.data.list).map((weatherArrList, i) => {
+                            return (
+                                <Paper key={i}>
+                                    <Location
+                                        forecastCard={classes.forecastCard}
+                                        imageIcon={`http://openweathermap.org/img/w/${weatherArrList.weather[0].icon}.png`}
+                                        title={weatherArrList.weather[0].main}
+                                        description={weatherArrList.weather[0].main}
+                                        temperature={returnRoundedNumber(weatherArrList.main.temp)}
+                                    />  
+                                </Paper>
+                            )
+                        })
+                        :
+                    null
+                    }
                 </Grid>
-            </Paper>
+            </Grid>
         </div>
     )
 };
