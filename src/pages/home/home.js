@@ -52,6 +52,11 @@ const styles = theme => ({
         color: '#03a9f4',
         textShadow: `1px 1px 1px #000`
     },
+    forecastContainer: {
+        display: 'flex',
+        justifyContent: 'space-around',
+        flexDirection: 'column'
+    },
     forecastGrid: {
         display: 'flex',
         justifyContent: 'space-evenly',
@@ -60,6 +65,10 @@ const styles = theme => ({
     forecastCard: {
         width: '5em',
         height: 'fit-content'
+    },
+    forecastHeader: {
+        display: 'flex',
+        justifyContent: 'space-around'
     }
 });
 
@@ -126,14 +135,17 @@ let Home = props => {
                 </Grid>
             {/* ---------------------------------------- End Main Container ------------------------------------------------------ */}
             </Grid>
-            <Grid container>
+            <Grid container className={classes.forecastContainer}>
+                <Typography variant="h6" gutterBottom className={classes.forecastHeader}>
+                    Hourly forecast
+                </Typography>
                 <Grid item md={12} className={classes.forecastGrid}>
                     {weatherData 
                         ?
                         // Loop over nested objects returned from the API
                         Object.values(weatherData.data.list).map((weatherArrList, i) => {
                             return (
-                                <Paper key={i}>
+                                <Paper key={i} style={{height: 'fit-content'}}>
                                     <Location
                                         unixDt={weatherArrList.dt}
                                         forecastCard={classes.forecastCard}

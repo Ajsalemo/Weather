@@ -51,6 +51,7 @@ let Location = props => {
             <CardHeader
                 title={ name || country ? `${name}, ${country}` : null }
                 subheader={ name || country ? moment().format('MMMM Do YYYY, h:mm a') : moment.unix(unixDt).format("ddd, hA") }
+                style={{padding: '0.3em'}}
             />
             <CardActionArea>
                 <CardMedia 
