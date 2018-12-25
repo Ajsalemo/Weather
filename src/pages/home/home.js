@@ -135,6 +135,7 @@ let Home = props => {
                             return (
                                 <Paper key={i}>
                                     <Location
+                                        unixDt={weatherArrList.dt}
                                         forecastCard={classes.forecastCard}
                                         imageIcon={`http://openweathermap.org/img/w/${weatherArrList.weather[0].icon}.png`}
                                         title={weatherArrList.weather[0].main}

@@ -42,6 +42,7 @@ let Location = props => {
         wind,
         humidity,
         imageIcon,
+        unixDt,
         // Value passed in from the parent component(Home)
         forecastCard
     } = props;
@@ -49,7 +50,7 @@ let Location = props => {
         <Card className={`${classes.cardContainer} ${forecastCard}`}>
             <CardHeader
                 title={ name || country ? `${name}, ${country}` : null }
-                subheader={ name || country ? moment().format('MMMM Do YYYY, h:mm a') : null }
+                subheader={ name || country ? moment().format('MMMM Do YYYY, h:mm a') : moment.unix(unixDt).format("ddd, hA") }
             />
             <CardActionArea>
                 <CardMedia 
