@@ -85,6 +85,13 @@ const returnRoundedNumber = temp => {
 
 let Home = props => {
     const { classes, weatherData } = props;
+    const city = weatherData.data.city.name;
+    const country = weatherData.data.city.country;
+    const lat = weatherData.data.city.coord.lat;
+    const lon = weatherData.data.city.coord.lon;
+    const main = weatherData.data.list[0].weather[0].main;
+    let temp = weatherData.data.list[0].main.temp;
+
     return (
         <div className={classes.container}>
             {/* ---------------------------------------- Main Grid Container ------------------------------------------------------ */}
@@ -114,10 +121,10 @@ let Home = props => {
                         {weatherData 
                             ?
                         <Location 
-                            description={weatherData.data.list[0].weather[0].main}
-                            name={weatherData.data.city.name}
-                            country={weatherData.data.city.country}
-                            temperature={returnRoundedNumber(weatherData.data.list[0].main.temp)}
+                            description={main}
+                            name={city}
+                            country={country}
+                            temperature={returnRoundedNumber(temp)}
                             wind={returnRoundedNumber(weatherData.data.list[0].wind.speed)}
                             humidity={weatherData.data.list[0].main.humidity}
                             imageIcon={`http://openweathermap.org/img/w/${weatherData.data.list[0].weather[0].icon}.png`}
@@ -168,10 +175,16 @@ let Home = props => {
                     direction='row'
                 >
                     <Grid item md={6} xs={12} style={{height: '400px', width: '100%'}}>
-                        <Paper style={{margin: '2em'}}>
+                        <Paper style={{margin: '4em 2em 2em 2em'}}>
                             <LeafletMap 
                                 position={[weatherData.data.city.coord.lat, weatherData.data.city.coord.lon]}
-                                zoom={15} 
+                                zoom={5}
+                                city={city} 
+                                country={country}
+                                lat={lat}
+                                lon={lon}
+                                main={main}
+                                temp={returnRoundedNumber(temp)}
                             />
                         </Paper>
                     </Grid>

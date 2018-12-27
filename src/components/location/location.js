@@ -73,7 +73,7 @@ let Location = props => {
                 :
             // Else if all values are being passed into the component(Being used at the main component/current weather)
             // Display normal, hero based text
-            <Typography gutterBottom variant="h3" component="h2" style={{paddingLeft: '0.3em'}}>
+            <Typography gutterBottom variant="h3" component="h2" style={{paddingLeft: '0.2em'}}>
                 <span style={{display: 'block'}}>{temperature}&deg;</span> 
                 <span style={{display: 'block'}}>{description}</span>
             </Typography>

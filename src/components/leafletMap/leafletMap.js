@@ -2,6 +2,7 @@
 // ------------------------------------------------------------------------------------------------------- //
 
 import React from 'react';
+import { connect } from 'react-redux';
 
 // Leaflet 
 import { Map, Marker, TileLayer, Popup } from 'react-leaflet';
@@ -9,9 +10,10 @@ import { Map, Marker, TileLayer, Popup } from 'react-leaflet';
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
-const LeafletMap = props => {
-    const { position, zoom } = props;
+let LeafletMap = props => {
+    const { position, zoom, city, country, lat, lon, main, temp } = props;
     const API_KEY = process.env.REACT_APP_WEATHER_API_URL;
+
     return (
         <Map center={position} zoom={zoom} style={{height: '400px'}}>
             {/* -------------------------------------- Base layer ------------------------------------------------ */}
@@ -25,14 +27,17 @@ const LeafletMap = props => {
             />
             <Marker position={position}>
             <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
+                {city}, {country} 
+                <br /> 
+                {lat}, {lon}
+                <br />
+                <b>{main}</b> | {temp}&deg;
             </Popup>
             </Marker>
         </Map>
     )
 }
 
-// ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
 export default LeafletMap;
