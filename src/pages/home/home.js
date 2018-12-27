@@ -19,6 +19,7 @@ import background1 from '../../images/background1.jpg';
 // Components
 import SearchBar from '../../components/searchbar';
 import Location from '../../components/location';
+import LeafletMap from '../../components/leafletMap';
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
@@ -160,6 +161,23 @@ let Home = props => {
                         :
                     null
                     }
+                </Grid>
+                {/* ----------------------------- Weather Map Component --------------------------------- */}
+                <Grid
+                    container
+                    direction='row'
+                >
+                    <Grid item md={6} xs={12} style={{height: '400px', width: '100%'}}>
+                        <Paper style={{margin: '2em'}}>
+                            <LeafletMap 
+                                position={[weatherData.data.city.coord.lat, weatherData.data.city.coord.lon]}
+                                x={weatherData.data.city.coord.lat}
+                                y={weatherData.data.city.coord.lon}
+                                zoom={15} 
+                            />
+                        </Paper>
+                    </Grid>
+                {/* --------------------------------------------------------------------------------------- */}
                 </Grid>
             </Grid>
         </div>
