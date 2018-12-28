@@ -180,12 +180,13 @@ class Home extends Component {
                     {/* ---------------------------------------- End Main Item Container -------------------------------------------- */}
                     </Grid>
                 {/* ---------------------------------------- End Main Container ------------------------------------------------------ */}
+                {/* --------------------------------- Toggle options to choose between forecast types -------------------------------- */}
                 </Grid>
                 <Grid container className={classes.forecastContainer}>
                     <Typography variant="h6" gutterBottom className={classes.forecastHeader}>
                         <span 
                             onClick={this.toggleDefaultForecast}
-                            className={defaultToggle ? classes.toggleSelected : null}
+                            className={`${defaultToggle ? classes.toggleSelected : null}  ${classes.forecastText}`}
                         >
                             Hourly
                         </span>
@@ -194,11 +195,13 @@ class Home extends Component {
                         <span 
                         // ---------------------------------------- //
                             onClick={this.toggleFiveDay}
-                            className={fiveDayToggle ? classes.toggleSelected : null}
+                            className={`${fiveDayToggle ? classes.toggleSelected : null}  ${classes.forecastText}`}
                         >
                             Five Day
                         </span>
                     </Typography>
+                    {/* ------------------------------------------- End toggle options ------------------------------------------------- */}
+                    {/* -------------------------------------------- Forecast component ------------------------------------------------ */}
                     <Grid item md={12} className={classes.forecastGrid}>
                         {weatherData 
                             ?
@@ -220,8 +223,10 @@ class Home extends Component {
                             :
                         null
                         }
+                    {/* -------------------------------------- End forecast component------------------------------------------------------ */}
                     </Grid>
-                    {/* ----------------------------- Weather Map Component --------------------------------- */}
+                    {/* --------------------------------------- Weather Map Component ----------------------------------------------------- */}
+
                     <Grid
                         container
                         direction='row'
@@ -240,7 +245,7 @@ class Home extends Component {
                                 />
                             </Paper>
                         </Grid>
-                    {/* --------------------------------------------------------------------------------------- */}
+                    {/* ------------------------------------------- End wWeather map component ---------------------------------------------- */}
                     </Grid>
                 </Grid>
             </div>
