@@ -2,7 +2,6 @@
 // ------------------------------------------------------------------------------------------------------- //
 
 import React from 'react';
-import { connect } from 'react-redux';
 
 // Leaflet 
 import { Map, Marker, TileLayer, Popup } from 'react-leaflet';

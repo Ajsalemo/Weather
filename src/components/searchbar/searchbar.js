@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 
 // Actions
-import { submitSearchLocation } from '../../redux/actions';
+import { submitSearchLocation, fiveDayData } from '../../redux/actions';
 
 // Material UI components
 import TextField from '@material-ui/core/TextField';
@@ -76,8 +76,12 @@ class SearchBar extends Component {
     
         this.props.submitSearchLocation(searchbar.values.searchbar)
             .then(() => {
-                console.log('submitted');
-            })
+                console.log('submitted weatherData');
+                this.props.fiveDayData(searchbar.values.searchbar)
+                    .then(() => {
+                        console.log('submitted fiveDayData');
+                    })
+            });
     }
 
     // ------------------------------------------------------------------------------------------------------- //
@@ -115,7 +119,7 @@ SearchBar = reduxForm({
 
 SearchBar = connect(
     mapStateToProps,
-    { submitSearchLocation }
+    { submitSearchLocation, fiveDayData }
 )(SearchBar);
 
 // ------------------------------------------------------------------------------------------------------- //

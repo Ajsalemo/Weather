@@ -1,26 +1,27 @@
 // -------------------------------------------- Imports -------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
-import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
-
-// Reducers
-import weatherData from './weatherData';
-import fiveDayData from './fiveDayData';
+import { SUBMIT_FIVE_DAY_FORECAST } from './types';
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
-const rootReducer = combineReducers({
-    fiveDayData,
-    weatherData,
-    form: formReducer
-})
+const fiveDayData = (state = {}, action) => {
+    switch (action.type) {
+        case SUBMIT_FIVE_DAY_FORECAST:
+            return {
+                fiveDayDataInformation: action.payload
+            }
+    
+        default:
+            return state;
+    }
+}
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
-export default rootReducer;
+export default fiveDayData;
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
