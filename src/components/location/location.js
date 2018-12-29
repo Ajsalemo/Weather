@@ -57,7 +57,7 @@ let Location = props => {
                 subheader={
                     (!name && !country && !defaultToggle)
                         ?
-                    moment.unix(unixDt).format("ddd, DDDo")
+                    moment.unix(unixDt).format("ddd, Do")
                         :
                     (!name && !country && defaultToggle)
                         ?
