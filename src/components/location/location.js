@@ -43,14 +43,28 @@ let Location = props => {
         humidity,
         imageIcon,
         unixDt,
+        defaultToggle,
         // Value passed in from the parent component(Home)
         forecastCard
     } = props;
+     
     return (
         <Card className={`${classes.cardContainer} ${forecastCard}`}>
             <CardHeader
                 title={ name || country ? `${name}, ${country}` : null }
-                subheader={ name || country ? moment().format('MMMM Do YYYY, h:mm a') : moment.unix(unixDt).format("ddd, hA") }
+                // Conditional statement depending on which type of forecast is selected
+                // This statement takes into account the main weather component in the header
+                subheader={
+                    (!name && !country && !defaultToggle)
+                        ?
+                    moment.unix(unixDt).format("ddd, DDDo")
+                        :
+                    (!name && !country && defaultToggle)
+                        ?
+                    moment.unix(unixDt).format("ddd, hA")
+                        :
+                    moment().format('MMMM Do YYYY, h:mm a')
+                }
                 style={{padding: '0.3em'}}
             />
             <CardActionArea>

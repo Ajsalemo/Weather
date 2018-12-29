@@ -93,8 +93,8 @@ const returnRoundedNumber = temp => {
 // ------------------------------------------------------------------------------------------------------- //
 
 class Home extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             defaultToggle: true,
             fiveDayToggle: false
@@ -121,7 +121,7 @@ class Home extends Component {
     // ------------------------------------------------------------------------------------------------------- //
 
     render() {
-        const { classes, weatherData } = this.props;
+        const { classes, weatherData, fiveDayData } = this.props;
         const { defaultToggle, fiveDayToggle } = this.state;
         const city = weatherData.data.city.name;
         const country = weatherData.data.city.country;
@@ -203,13 +203,15 @@ class Home extends Component {
                     {/* ------------------------------------------- End toggle options ------------------------------------------------- */}
                     {/* -------------------------------------------- Forecast component ------------------------------------------------ */}
                     <Grid item md={12} className={classes.forecastGrid}>
-                        {weatherData 
+                        {defaultToggle 
                             ?
-                            // Loop over nested objects returned from the API
+                            // Loop over nested objects returned from the API which is stored in the Redux store
+                            // This loop returns the Hourly forecast data
                             Object.values(weatherData.data.list).map((weatherArrList, i) => {
                                 return (
                                     <Paper key={i} style={{height: 'fit-content'}}>
                                         <Location
+                                            defaultToggle={defaultToggle}
                                             unixDt={weatherArrList.dt}
                                             forecastCard={classes.forecastCard}
                                             imageIcon={`http://openweathermap.org/img/w/${weatherArrList.weather[0].icon}.png`}
@@ -221,7 +223,35 @@ class Home extends Component {
                                 )
                             })
                             :
-                        null
+                            // Loops over the object returned from the Openweathermap API - this is put stored in the Redux store
+                            // Pushes the iterated objects back into their own arrays to map over them
+                            // This is done to properly return JSX and not have the "dt_txt" key be undefined when the "includes" method is called on it
+                            Object.values(fiveDayData.data.list).map((res, i) => {
+                                const dataArray = [];
+                                const time = "12:00:00";
+                                dataArray.push(res);
+                                return (
+                                    dataArray.map((dtList, i) => {
+                                        return (
+                                            dtList.dt_txt.includes(time) 
+                                                ?
+                                            <Paper key={i} style={{height: 'fit-content'}}>
+                                                <Location
+                                                    defaultToggle={defaultToggle}
+                                                    unixDt={dtList.dt}
+                                                    forecastCard={classes.forecastCard}
+                                                    imageIcon={`http://openweathermap.org/img/w/${dtList.weather[0].icon}.png`}
+                                                    title={dtList.weather[0].main}
+                                                    description={dtList.weather[0].main}
+                                                    temperature={returnRoundedNumber(dtList.main.temp)}
+                                                />  
+                                            </Paper>
+                                                :
+                                            null
+                                        )
+                                    })
+                                )
+                            })
                         }
                     {/* -------------------------------------- End forecast component------------------------------------------------------ */}
                     </Grid>
@@ -257,7 +287,8 @@ class Home extends Component {
 // ------------------------------------------------------------------------------------------------------- //
 const mapStateToProps = state => {
     return {
-        weatherData: state.weatherData.information
+        weatherData: state.weatherData.information,
+        fiveDayData: state.fiveDayData.fiveDayDataInformation
     }
 }
 

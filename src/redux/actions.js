@@ -39,14 +39,6 @@ export const fiveDayData = query => {
                 type: SUBMIT_FIVE_DAY_FORECAST,
                 payload: result
             })
-            // TEST - Trying to gain the weather values at 12pm each day for a 5 day forecast
-            Object.values(result).map((res, i) => {
-                const list = res.list;
-                for(let j = 0; j < list.length; j++) {
-                    list[j].dt_txt.includes("12:00:00") ? 
-                    console.log(list[j]) : console.log('false')
-                }
-            })
         })
             .catch(err => {
                 console.log(err);
