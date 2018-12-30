@@ -6,12 +6,13 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 
 // Actions
-import { submitSearchLocation, fiveDayData } from '../../redux/actions';
+import { fiveDayDataForecast } from '../../redux/actions';
 
 // Material UI components
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Search } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core';
 
@@ -39,11 +40,32 @@ const styles = theme => ({
 class SearchBar extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isLoading: false
+        }
         this.renderTextField = this.renderTextField.bind(this);
         this.searchForLocation = this.searchForLocation.bind(this);
     }
 
+    // ------------------------------------------------------------------------------------------------------- //
+
+    searchForLocation = () => {
+    const { searchbar } = this.props;
+    this.setState({
+        isLoading: true
+    })
+    this.props.fiveDayDataForecast(searchbar.values.searchbar)
+        .then(() => {
+            this.setState({
+                isLoading: false
+            })
+        });
+    }
+
+    // ------------------------------------------------------------------------------------------------------- //
+
     renderTextField = ({classes, name, input, label, placeholder, meta: { touched, error }}) => {
+        const { isLoading } = this.state;
         return (
             <TextField
                 variant="filled"
@@ -71,20 +93,6 @@ class SearchBar extends Component {
 
     // ------------------------------------------------------------------------------------------------------- //
 
-    searchForLocation = () => {
-        const { searchbar } = this.props;
-    
-        this.props.submitSearchLocation(searchbar.values.searchbar)
-            .then(() => {
-                console.log('submitted weatherData');
-                this.props.fiveDayData(searchbar.values.searchbar)
-                    .then(() => {
-                        console.log('submitted fiveDayData');
-                    })
-            });
-    }
-
-    // ------------------------------------------------------------------------------------------------------- //
     render() {
         const { classes, handleSubmit } = this.props;
         return (
@@ -95,7 +103,7 @@ class SearchBar extends Component {
                     placeholder="Ex. - Charlotte, US or Paris, FR"
                     label="Enter a location" 
                     classes={classes.textField}
-                />
+                />   
             </form>
         )
     }
@@ -119,7 +127,7 @@ SearchBar = reduxForm({
 
 SearchBar = connect(
     mapStateToProps,
-    { submitSearchLocation, fiveDayData }
+    { fiveDayDataForecast }
 )(SearchBar);
 
 // ------------------------------------------------------------------------------------------------------- //

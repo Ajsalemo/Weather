@@ -1,18 +1,17 @@
 // -------------------------------------------- Imports -------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
-import { SUBMIT_FIVE_DAY_FORECAST } from './types';
+import { SUBMIT_FIVE_DAY_FORECAST_SUCCESS } from './types';
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
 const fiveDayData = (state = {}, action) => {
     switch (action.type) {
-        case SUBMIT_FIVE_DAY_FORECAST:
+        case SUBMIT_FIVE_DAY_FORECAST_SUCCESS:
             return {
                 fiveDayDataInformation: action.payload
             }
-    
         default:
             return state;
     }

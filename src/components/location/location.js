@@ -2,7 +2,6 @@
 // ------------------------------------------------------------------------------------------------------- //
 
 import React from 'react';
-import { connect } from 'react-redux';
 import moment from 'moment';
 
 
@@ -13,9 +12,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core';
-
-// Actions
-import { submitSearchLocation } from '../../redux/actions';
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
@@ -101,13 +97,6 @@ let Location = props => {
 };
 
 // ------------------------------------------------------------------------------------------------------- //
-// ------------------------------------------------------------------------------------------------------- //
-
-Location = connect(
-    null,
-    { submitSearchLocation }
-)(Location);
-
 // ------------------------------------------------------------------------------------------------------- //
 
 export default withStyles(styles)(Location);

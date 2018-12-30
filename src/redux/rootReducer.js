@@ -5,7 +5,6 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 // Reducers
-import weatherData from './weatherData';
 import fiveDayData from './fiveDayData';
 
 // ------------------------------------------------------------------------------------------------------- //
@@ -13,7 +12,6 @@ import fiveDayData from './fiveDayData';
 
 const rootReducer = combineReducers({
     fiveDayData,
-    weatherData,
     form: formReducer
 })
 
