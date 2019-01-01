@@ -32,6 +32,9 @@ const styles = theme => ({
         [theme.breakpoints.up('sm')]: {
             flexBasis: '50%'
           }
+    },
+    loadingPropColor: {
+        color: '#fff'
     }
 });
   
@@ -51,21 +54,21 @@ class SearchBar extends Component {
 
     searchForLocation = () => {
     const { searchbar } = this.props;
+    const { isLoading } = this.state;
     this.setState({
-        isLoading: true
+        isLoading: !isLoading
     })
     this.props.fiveDayDataForecast(searchbar.values.searchbar)
         .then(() => {
             this.setState({
-                isLoading: false
+                isLoading: isLoading
             })
         });
     }
 
     // ------------------------------------------------------------------------------------------------------- //
 
-    renderTextField = ({classes, name, input, label, placeholder, meta: { touched, error }}) => {
-        const { isLoading } = this.state;
+    renderTextField = ({classes, name, input, label, placeholder, loading, meta: { touched, error }}) => {
         return (
             <TextField
                 variant="filled"
@@ -73,6 +76,7 @@ class SearchBar extends Component {
                 placeholder={placeholder}
                 className={classes}
                 label={label}
+                disabled={loading}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment variant="filled" position="end">
@@ -81,7 +85,7 @@ class SearchBar extends Component {
                             style={{color: '#fff'}}
                             type='submit'
                         >
-                            <Search />
+                            {!loading ? <Search/> : <CircularProgress style={{color: '#fff'}} />}
                         </IconButton>
                         </InputAdornment>
                     ),
@@ -95,6 +99,7 @@ class SearchBar extends Component {
 
     render() {
         const { classes, handleSubmit } = this.props;
+        const { isLoading } = this.state;
         return (
             <form className={classes.form} onSubmit={handleSubmit(this.searchForLocation)}>
                 <Field 
@@ -103,6 +108,7 @@ class SearchBar extends Component {
                     placeholder="Ex. - Charlotte, US or Paris, FR"
                     label="Enter a location" 
                     classes={classes.textField}
+                    loading={isLoading}
                 />   
             </form>
         )
