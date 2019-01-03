@@ -68,12 +68,16 @@ const styles = theme => ({
     },
     forecastCard: {
         width: '5em',
-        height: 'fit-content'
+        height: 'auto'
     },
     forecastText: {
         '&:hover': {
             cursor: 'pointer'   
         }
+    },
+    forecastHeader: {
+        color: '#fff',
+        margin: '0.6em 0em'
     },
     gridCenter: {
         display: 'flex',
@@ -86,7 +90,7 @@ const styles = theme => ({
     mainPaperCard: {
         border: '1px solid #fff',
         backgroundColor: '#ffffff6b',
-        padding: '0.5em'
+        padding: '0.3em'
     }
 });
 
@@ -167,7 +171,7 @@ class Home extends Component {
         // ------------------------------- Forecast toggle header ------------------------------------------------ //
 
         const forecastHeader = 
-            <Typography variant="h6" gutterBottom className={classes.gridCenter} style={{color: '#fff'}}>
+            <Typography variant="h6" gutterBottom className={`${classes.gridCenter} ${classes.forecastHeader}`}>
                 <span 
                     onClick={this.toggleDefaultForecast}
                     className={`${defaultToggle ? classes.toggleSelected : null}  ${classes.forecastText}`}
@@ -266,6 +270,7 @@ class Home extends Component {
                         lon={lon}
                         main={main}
                         temp={returnRoundedNumber(temp)}
+                        celsius={returnCelsius(temp)}
                     />
                 </Suspense>
             </Paper>

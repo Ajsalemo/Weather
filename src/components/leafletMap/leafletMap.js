@@ -10,7 +10,7 @@ import { Map, Marker, TileLayer, Popup } from 'react-leaflet';
 // ------------------------------------------------------------------------------------------------------- //
 
 let LeafletMap = props => {
-    const { position, zoom, city, country, lat, lon, main, temp } = props;
+    const { position, zoom, city, country, lat, lon, main, temp, celsius } = props;
     const API_KEY = process.env.REACT_APP_WEATHER_API_URL;
 
     return (
@@ -30,7 +30,7 @@ let LeafletMap = props => {
                 <br /> 
                 {lat}, {lon}
                 <br />
-                <b>{main}</b> | {temp}&deg;
+                <b>{main}</b> | {temp}&deg; / {celsius}&deg;C
             </Popup>
             </Marker>
         </Map>
