@@ -34,9 +34,8 @@ const styles = theme => ({
     hero: {
         backgroundColor: theme.palette.grey[800],
         backgroundImage: `url(${background1})`,
-        backgroundPosition: 'bottom',
-        width: 'auto',
-        height: 600
+        height: 'auto',
+        backgroundPosition: 'right'
     },
     locationGrid: {
         [theme.breakpoints.up('sm')]: {
@@ -58,29 +57,34 @@ const styles = theme => ({
     forecastContainer: {
         display: 'flex',
         justifyContent: 'space-around',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        paddingTop: '1em'
     },
     forecastGrid: {
         display: 'flex',
         justifyContent: 'space-evenly',
-        backgroundColor: '#c1eff4',
         paddingBottom: '1em'
     },
     forecastCard: {
         width: '5em',
         height: 'fit-content'
     },
-    forecastHeader: {
-        display: 'flex',
-        justifyContent: 'center'
-    },
     forecastText: {
         '&:hover': {
             cursor: 'pointer'   
         }
     },
+    gridCenter: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
     toggleSelected: {
         borderBottom: '1px solid #000'
+    },
+    mainPaperCard: {
+        border: '1px solid #fff',
+        backgroundColor: '#ffffff6b',
+        padding: '0.5em'
     }
 });
 
@@ -133,13 +137,6 @@ class Home extends Component {
         let temp = fiveDayData.data.list[0].main.temp;
 
         const loadingComponent = <div><CircularProgress /></div>
-        // ---------------------------------------- Main heading ---------------------------------------------- //
-
-        const mainHeading =
-            <Typography component="h2" variant="h1" className={classes.typography}>
-                <span>Weather{<span className={classes.subTitle}>.App</span>}</span>
-                {<span className={classes.subTitle} style={{display: 'block'}}>Your personal application</span>}
-            </Typography>
 
         // ---------------------------------- Main weather component ---------------------------------------------- //
 
@@ -147,6 +144,7 @@ class Home extends Component {
             fiveDayData.data ?
             <Suspense fallback={loadingComponent}>
                 <Location 
+                    mainPaperCard={classes.mainPaperCard}
                     description={main}
                     name={city}
                     country={country}
@@ -160,7 +158,7 @@ class Home extends Component {
         // ------------------------------- Forecast toggle header ------------------------------------------------ //
 
         const forecastHeader = 
-            <Typography variant="h6" gutterBottom className={classes.forecastHeader}>
+            <Typography variant="h6" gutterBottom className={classes.gridCenter}>
                 <span 
                     onClick={this.toggleDefaultForecast}
                     className={`${defaultToggle ? classes.toggleSelected : null}  ${classes.forecastText}`}
@@ -192,7 +190,7 @@ class Home extends Component {
                     return false
                 } else {
                     return (          
-                        <Paper key={j} style={{height: 'fit-content'}}>
+                        <Paper key={j} style={{height: 'fit-content'}} className={classes.mainPaperCard}>
                             <Suspense fallback={loadingComponent}>
                                 <Location
                                     defaultToggle={defaultToggle}
@@ -266,25 +264,20 @@ class Home extends Component {
         // ------------------------------------------------------------------------------------------------------------------------------- //
 
         return (
-            <div className={classes.container}>
+            <div className={`${classes.container} ${classes.hero}`}>
                 {/* ---------------------------------------- Main Grid Container ------------------------------------------------------ */}
-                <Grid container className={classes.hero}>
+                <Grid container>
                     {/* ---------------------------------------- Main Item Container ------------------------------------------------------ */}
                     <Grid item md={12} xs={12} style={{height: '100%'}}>
-                        {/* ----------------------------------------- Hero Component --------------------------------------- */}
-                        <Grid item md={12} xs={12}>
-                            {mainHeading}
-                        {/* ------------------------------------------- End Hero Component --------------------------------- */}
-                        </Grid>
                         {/* --------------------------------------- Card Container ------------------------------------------- */}
                         <Grid 
                             direction='row'
                             container
                             style={{padding: `1.7em 5em 1em 5em`}}
-                            className={classes.locationGrid}
+                            className={`${classes.locationGrid} ${classes.gridCenter}`} 
                         >
                             {/* ----------------------------------------- Card Item Grid --------------------------------------- */}
-                                <Grid item md={4}>
+                                <Grid item md={4} className={classes.gridCenter}>
                                 {mainWeatherComponent}          
                                 {/* ----------------------------------------- End Card Item Grid --------------------------------------- */}
                                 </Grid>

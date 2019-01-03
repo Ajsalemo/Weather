@@ -24,8 +24,7 @@ import { withStyles } from '@material-ui/core';
 const styles = theme => ({
     form: {
         display: 'flex',
-        alignItems: 'center',
-        marginLeft: '4em'
+        justifyContent: 'center',
     },
     textContainer: {
         height: 50,
