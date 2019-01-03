@@ -24,7 +24,7 @@ import { withStyles } from '@material-ui/core';
 const styles = theme => ({
     form: {
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     textContainer: {
         height: 50,
@@ -35,7 +35,8 @@ const styles = theme => ({
           }
     },
     textField: {
-        width: '100%'
+        width: '100%',
+        borderBottom: '1px solid #fff'
     },
     loadingPropColor: {
         color: '#fff'

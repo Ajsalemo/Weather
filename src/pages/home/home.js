@@ -33,7 +33,8 @@ const styles = theme => ({
     },
     hero: {
         backgroundColor: theme.palette.grey[800],
-        backgroundImage: `url(${background1})`,
+        backgroundImage: `linear-gradient(75deg, rgba(0, 231, 255, 0), rgba(10, 15, 90, 0.42)), 
+                            url(${background1})`,
         height: 'auto',
         backgroundPosition: 'right'
     },
@@ -79,7 +80,8 @@ const styles = theme => ({
         justifyContent: 'center'
     },
     toggleSelected: {
-        borderBottom: '1px solid #000'
+        borderBottom: '1px solid #43bedf',
+        color: '#43bedf'
     },
     mainPaperCard: {
         border: '1px solid #fff',
@@ -95,6 +97,12 @@ const returnRoundedNumber = temp => {
         parseInt(Math.round(`${temp}`))
     )
 };
+
+const returnCelsius = temp => {
+    return (
+        parseInt(Math.round((5/9) * (temp-32)))
+    )
+}
 
 // ------------------------------------------------------------------------------------------------------- //
 
@@ -148,7 +156,8 @@ class Home extends Component {
                     description={main}
                     name={city}
                     country={country}
-                    temperature={returnRoundedNumber(temp)}
+                    celsius={returnCelsius(temp)}
+                    fahrenheit={returnRoundedNumber(temp)}
                     wind={returnRoundedNumber(fiveDayData.data.list[0].wind.speed)}
                     humidity={fiveDayData.data.list[0].main.humidity}
                     imageIcon={`http://openweathermap.org/img/w/${fiveDayData.data.list[0].weather[0].icon}.png`}
@@ -158,7 +167,7 @@ class Home extends Component {
         // ------------------------------- Forecast toggle header ------------------------------------------------ //
 
         const forecastHeader = 
-            <Typography variant="h6" gutterBottom className={classes.gridCenter}>
+            <Typography variant="h6" gutterBottom className={classes.gridCenter} style={{color: '#fff'}}>
                 <span 
                     onClick={this.toggleDefaultForecast}
                     className={`${defaultToggle ? classes.toggleSelected : null}  ${classes.forecastText}`}
@@ -190,19 +199,19 @@ class Home extends Component {
                     return false
                 } else {
                     return (          
-                        <Paper key={j} style={{height: 'fit-content'}} className={classes.mainPaperCard}>
-                            <Suspense fallback={loadingComponent}>
-                                <Location
-                                    defaultToggle={defaultToggle}
-                                    unixDt={fiveDayArrList.dt}
-                                    forecastCard={classes.forecastCard}
-                                    imageIcon={`http://openweathermap.org/img/w/${fiveDayArrList.weather[0].icon}.png`}
-                                    title={fiveDayArrList.weather[0].main}
-                                    description={fiveDayArrList.weather[0].main}
-                                    temperature={returnRoundedNumber(fiveDayArrList.main.temp)}
-                                />  
-                            </Suspense>      
-                        </Paper>
+                        <Suspense fallback={loadingComponent} key={j}>
+                            <Location 
+                                mainPaperCard={classes.mainPaperCard}
+                                defaultToggle={defaultToggle}
+                                unixDt={fiveDayArrList.dt}
+                                forecastCard={classes.forecastCard}
+                                imageIcon={`http://openweathermap.org/img/w/${fiveDayArrList.weather[0].icon}.png`}
+                                title={fiveDayArrList.weather[0].main}
+                                description={fiveDayArrList.weather[0].main}
+                                fahrenheit={returnRoundedNumber(fiveDayArrList.main.temp)}
+                                celsius={returnCelsius(temp)}
+                            />  
+                        </Suspense>      
                     ) 
                 }
             }) : loadingComponent
@@ -221,20 +230,20 @@ class Home extends Component {
                     dataArray.map((dtList, i) => {
                         return (
                             dtList.dt_txt.includes(time) 
-                                ?
-                            <Paper key={i} style={{height: 'fit-content'}}>  
-                                <Suspense fallback={loadingComponent}>
-                                    <Location
+                                ? 
+                                <Suspense fallback={loadingComponent} key={i}>
+                                    <Location   
+                                        mainPaperCard={classes.mainPaperCard} 
                                         defaultToggle={defaultToggle}
                                         unixDt={dtList.dt}
                                         forecastCard={classes.forecastCard}
                                         imageIcon={`http://openweathermap.org/img/w/${dtList.weather[0].icon}.png`}
                                         title={dtList.weather[0].main}
                                         description={dtList.weather[0].main}
-                                        temperature={returnRoundedNumber(dtList.main.temp)}
+                                        fahrenheit={returnRoundedNumber(dtList.main.temp)}
+                                        celsius={returnCelsius(temp)}
                                     /> 
                                 </Suspense>                                          
-                            </Paper>
                                 :
                             null
                         )
@@ -295,7 +304,7 @@ class Home extends Component {
                     {forecastHeader}
                     {/* ------------------------------------------- End toggle options ------------------------------------------------- */}
                     {/* -------------------------------------------- Forecast component ------------------------------------------------ */}
-                    <Grid item md={12} className={classes.forecastGrid}>
+                    <Grid item md={12} className={`${classes.forecastGrid} ${classes.gridCenter}`}>
                         {defaultToggle ? hourlyForecast : fiveDayInformation}
                     {/* -------------------------------------- End forecast component------------------------------------------------------ */}
                     </Grid>

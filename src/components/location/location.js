@@ -20,12 +20,16 @@ const styles = theme => ({
     cardContainer: {
         width: 'auto',
         [theme.breakpoints.up(418)]: {
-            width: '10em'
-          }
+            width: '12em'
+          },
+        textAlign: 'center'
     },
-    colorTextEnhance: {
-        color: '#fff',
-        textShadow: '1px 1px 1px #000'
+    colorOveride: {
+        color: '#fff'
+    },
+    imageCenter: {
+        width: '50%',
+        margin: 'auto'
     }
 });
 
@@ -38,7 +42,8 @@ let Location = props => {
         description, 
         name, 
         country, 
-        temperature, 
+        fahrenheit, 
+        celsius,
         wind,
         humidity,
         imageIcon,
@@ -50,9 +55,13 @@ let Location = props => {
     } = props;
      
     return (
-        <Card className={`${classes.cardContainer} ${forecastCard} ${mainPaperCard}`}>
+        <Card className={`${classes.cardContainer} ${classes.colorOveride} ${forecastCard} ${mainPaperCard}`}>
             <CardHeader
                 title={ name || country ? `${name}, ${country}` : null }
+                classes={{ 
+                    title: classes.colorOveride, 
+                    subheader: classes.colorOveride
+                }}
                 // Conditional statement depending on which type of forecast is selected
                 // This statement takes into account the main weather component in the header
                 subheader={
@@ -75,7 +84,7 @@ let Location = props => {
                         alt="weather"
                         title={description}
                         image={imageIcon}
-                        style={{width: '50%'}}
+                        className={classes.imageCenter}
                     />
                 </div>
             </CardActionArea>
@@ -83,19 +92,23 @@ let Location = props => {
             {/* Display smaller and minimal text(for 5 day forecast component) */}
             {!wind || !humidity 
                 ? 
-            <Typography gutterBottom variant="body2">
-                <span style={{display: 'block'}}>{temperature}&deg;</span> 
+            <Typography gutterBottom variant="body2" className={classes.colorOveride}>
+                <span style={{display: 'inline-block'}}>{fahrenheit}&deg;F</span> 
+                /
+                <span style={{display: 'inline-block'}}>{celsius}&deg;C</span>
                 <span style={{display: 'block'}}>{description}</span>
             </Typography>
                 :
             // Else if all values are being passed into the component(Being used at the main component/current weather)
             // Display normal, hero based text
-            <Typography gutterBottom variant="h3" component="h2" className={classes.colorTextEnhance}>
-                <span style={{display: 'block'}}>{temperature}&deg;</span> 
+            <Typography gutterBottom variant="h3" component="h2" className={classes.colorOveride}>
+                <span style={{display: 'inline-block'}}>{fahrenheit}&deg;F</span> 
+                /
+                <span style={{display: 'inline-block'}}>{celsius}&deg;C</span> 
                 <span style={{display: 'block'}}>{description}</span>
             </Typography>
             }
-            <Typography gutterBottom variant="body2" className={classes.colorTextEnhance}>
+            <Typography gutterBottom variant="body2" className={classes.colorOveride}>
                 { wind ? <span style={{display: 'block'}}>Wind speed: {wind}mph</span> : null } 
                 { humidity ? <span style={{display: 'block'}}>Humidity: {humidity}%</span> : null }
             </Typography>
