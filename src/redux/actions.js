@@ -20,9 +20,6 @@ export const fiveDayDataForecast = query => {
                 payload: result
             })
         })
-            .catch(err => {
-                return err;
-            })
 };
 
 // ------------------------------------------------------------------------------------------------------- //

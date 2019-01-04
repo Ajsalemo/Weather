@@ -77,7 +77,7 @@ const styles = theme => ({
     },
     forecastHeader: {
         color: '#fff',
-        margin: '0.6em 0em'
+        margin: '1.3em 0em'
     },
     gridCenter: {
         display: 'flex',
@@ -315,7 +315,7 @@ class Home extends Component {
                     </Grid>
                     {/* --------------------------------------- Weather Map Component ----------------------------------------------------- */}
 
-                    <Grid container direction='row'>
+                    <Grid container direction='row' style={{justifyContent: 'center'}}>
                         <Grid item md={6} xs={12} style={{height: '400px', width: '100%'}}>
                             {leafletMapDisplay}
                         </Grid>

@@ -63,7 +63,8 @@ class SearchBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false
+            isLoading: false,
+            stateError: ''
         }
         this.renderTextField = this.renderTextField.bind(this);
         this.searchForLocation = this.searchForLocation.bind(this);
@@ -75,19 +76,25 @@ class SearchBar extends Component {
     const { searchbar } = this.props;
     const { isLoading } = this.state;
     this.setState({
-        isLoading: !isLoading
+        isLoading: !isLoading,
+        stateError: ''
     })
     this.props.fiveDayDataForecast(searchbar.values.searchbar)
         .then(() => {
             this.setState({
                 isLoading: isLoading
             })
-        });
+        }).catch(err => {
+            this.setState({
+                stateError: err.response.data.message,
+                isLoading: isLoading
+            });
+        })
     }
 
     // ------------------------------------------------------------------------------------------------------- //
 
-    renderTextField = ({containerClass, classes, errorClass, name, input, label, placeholder, loading, meta: { touched, error }}) => {
+    renderTextField = ({containerClass, classes, errorClass, name, input, label, placeholder, loading, stateError, meta: { touched, error }}) => {
         return (
             <div className={containerClass}>
                 <TextField
@@ -112,8 +119,9 @@ class SearchBar extends Component {
                     }}
                     {...input}
                 />
-                <Grid container direction='row'>
-                    <Paper className={errorClass}>{touched && (error && <span>{error}</span>)}</Paper>
+                <Grid container direction='row' style={{justifyContent: 'center'}}>
+                    {error ? <Paper className={errorClass}>{touched && (error && <span>{error}</span>)}</Paper> : null}
+                    {stateError ? <Paper className={errorClass}>{touched && (stateError && <span>{stateError}</span>)}</Paper> : null}
                 </Grid>
             </div>
         )
@@ -123,7 +131,7 @@ class SearchBar extends Component {
 
     render() {
         const { classes, handleSubmit } = this.props;
-        const { isLoading } = this.state;
+        const { isLoading, stateError } = this.state;
         return (
             <form className={classes.form} onSubmit={handleSubmit(this.searchForLocation)}>
                 <Field 
@@ -135,6 +143,7 @@ class SearchBar extends Component {
                     containerClass={classes.textContainer}
                     loading={isLoading}
                     errorClass={classes.errorPaper}
+                    stateError={stateError}
                 />   
             </form>
         )
