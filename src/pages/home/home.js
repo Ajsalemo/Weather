@@ -14,7 +14,7 @@ import { withStyles } from '@material-ui/core/styles';
 import background1 from '../../images/background1.jpg';
 
 // Actions
-import { fiveDayDataForecast } from '../../redux/actions';
+import { fiveDayDataForecast, getLocation } from '../../redux/actions';
 
 // Components
 import SearchBar from '../../components/searchbar';
@@ -123,10 +123,11 @@ class Home extends Component {
         this.state = {
             defaultToggle: true,
             fiveDayToggle: false,
-            isLoading: false
+            isLoading: false,
         }
         this.toggleDefaultForecast = this.toggleDefaultForecast.bind(this);
         this.toggleFiveDay = this.toggleFiveDay.bind(this);
+        this.returnLocationComponent = this.returnLocationComponent.bind(this);
         // Components
         this.loadingComponent = this.loadingComponent.bind(this);
         this.mainWeatherComponent = this.mainWeatherComponent.bind(this);
@@ -136,9 +137,13 @@ class Home extends Component {
         this.leafletMapDisplay = this.leafletMapDisplay.bind(this);
     }
 
-    componentDidMount = () => {
-        const { fiveDayData } = this.props;
+    // ------------------------------------------------------------------------------------------------------- //
 
+    returnLocationComponent = () => {
+        // If the redux-store is empty, load dummy data upon the initial load
+        // Afterwards in the promise - prompt the user to use Geolocation, if so - return their local data
+        // If not - the dummy data will be available. Users can still use the searchbar/query 
+        const { fiveDayData } = this.props;
         if(!fiveDayData) {
             this.setState({
                 isLoading: true
@@ -148,8 +153,25 @@ class Home extends Component {
                     this.setState({
                         isLoading: false
                     })
+                    if(navigator.geolocation) {
+                        this.props.getLocation()
+                    } else {
+                        return;
+                    }
                 })
-        }
+                    .catch(err => {
+                        this.setState({
+                            isLoading: false
+                        });
+                    })
+        } 
+    }
+
+    // ------------------------------------------------------------------------------------------------------- //
+
+    componentDidMount = () => {
+        // On page load - return users location 
+        this.returnLocationComponent();
     }
 
     // ------------------------------------------------------------------------------------------------------- //
@@ -266,7 +288,7 @@ class Home extends Component {
                                     title={fiveDayArrList.weather[0].main}
                                     description={fiveDayArrList.weather[0].main}
                                     fahrenheit={returnRoundedNumber(fiveDayArrList.main.temp)}
-                                    celsius={returnCelsius(fiveDayData.data.list[0].main.temp)}
+                                    celsius={returnCelsius(fiveDayArrList.main.temp)}
                                 />  
                             </Suspense>  
                         ) 
@@ -309,7 +331,7 @@ class Home extends Component {
                                         title={dtList.weather[0].main}
                                         description={dtList.weather[0].main}
                                         fahrenheit={returnRoundedNumber(dtList.main.temp)}
-                                        celsius={returnCelsius(fiveDayData.data.list[0].main.temp)}
+                                        celsius={returnCelsius(dtList.main.temp)}
                                     /> 
                                 </Suspense>                                        
                                 : null
@@ -407,7 +429,7 @@ const mapStateToProps = state => {
 
 Home = connect(
     mapStateToProps,
-    { fiveDayDataForecast }
+    { fiveDayDataForecast, getLocation }
 )(Home);
 
 // ------------------------------------------------------------------------------------------------------- //
