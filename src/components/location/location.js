@@ -50,68 +50,75 @@ let Location = props => {
         unixDt,
         defaultToggle,
         mainPaperCard,
+        loading,
+        loadingProp,
         // Value passed in from the parent component(Home)
         forecastCard
     } = props;
      
     return (
         <Card className={`${classes.cardContainer} ${classes.colorOveride} ${forecastCard} ${mainPaperCard}`}>
-            <CardHeader
-                title={ name || country ? `${name}, ${country}` : null }
-                classes={{ 
-                    title: classes.colorOveride, 
-                    subheader: classes.colorOveride
-                }}
-                // Conditional statement depending on which type of forecast is selected
-                // This statement takes into account the main weather component in the header
-                subheader={
-                    (!name && !country && !defaultToggle)
-                        ?
-                    moment.unix(unixDt).format("ddd, Do")
-                        :
-                    (!name && !country && defaultToggle)
-                        ?
-                    moment.unix(unixDt).format("ddd, hA")
-                        :
-                    moment().format('MMMM Do YYYY, h:mm a')
-                }
-                style={{padding: '0.3em'}}
-            />
-            <CardActionArea>
-                <div>
-                    <CardMedia 
-                        component="img"
-                        alt="weather"
-                        title={description}
-                        image={imageIcon}
-                        className={classes.imageCenter}
-                    />
-                </div>
-            </CardActionArea>
-            {/* If there isn't wind/humidity values being passed in(due to this component being used a 5 day forecast) */}
-            {/* Display smaller and minimal text(for 5 day forecast component) */}
-            {!wind || !humidity 
+            {loading 
                 ? 
-            <Typography gutterBottom variant="body2" className={classes.colorOveride}>
-                <span style={{display: 'inline-block'}}>{fahrenheit}&deg;F</span> 
-                /
-                <span style={{display: 'inline-block'}}>{celsius}&deg;C</span>
-                <span style={{display: 'block'}}>{description}</span>
-            </Typography>
-                :
-            // Else if all values are being passed into the component(Being used at the main component/current weather)
-            // Display normal, hero based text
-            <Typography gutterBottom variant="h4" component="h2" className={classes.colorOveride}>
-                <span style={{display: 'inline-block'}}>{fahrenheit}&deg;F</span> 
-                /
-                <span style={{display: 'inline-block'}}>{celsius}&deg;C</span> 
-                <span style={{display: 'block'}}>{description}</span>
-            </Typography>
-            }
-            <Typography gutterBottom variant="body2" className={classes.colorOveride}>
-                { wind ? <span style={{display: 'block'}}>Wind speed: {wind}mph</span> : null } 
-                { humidity ? <span style={{display: 'block'}}>Humidity: {humidity}%</span> : null }
-            </Typography>
+                <div>
+                    <CardHeader
+                        title={ name || country ? `${name}, ${country}` : null }
+                        classes={{ 
+                            title: classes.colorOveride, 
+                            subheader: classes.colorOveride
+                        }}
+                        // Conditional statement depending on which type of forecast is selected
+                        // This statement takes into account the main weather component in the header
+                        subheader={
+                            (!name && !country && !defaultToggle)
+                                ?
+                            moment.unix(unixDt).format("ddd, Do")
+                                :
+                            (!name && !country && defaultToggle)
+                                ?
+                            moment.unix(unixDt).format("ddd, hA")
+                                :
+                            moment().format('MMMM Do YYYY, h:mm a')
+                        }
+                        style={{padding: '0.3em'}}
+                    />
+                    <CardActionArea>
+                        <div>
+                            <CardMedia 
+                                component="img"
+                                alt="weather"
+                                title={description}
+                                image={imageIcon}
+                                className={classes.imageCenter}
+                            />
+                        </div>
+                    </CardActionArea>
+                    {/* If there isn't wind/humidity values being passed in(due to this component being used a 5 day forecast) */
+                    /* Display smaller and minimal text(for 5 day forecast component) */}
+                    {!wind || !humidity 
+                        ? 
+                    <Typography gutterBottom variant="body2" className={classes.colorOveride}>
+                        <span style={{display: 'inline-block'}}>{fahrenheit}&deg;F</span> 
+                        /
+                        <span style={{display: 'inline-block'}}>{celsius}&deg;C</span>
+                        <span style={{display: 'block'}}>{description}</span>
+                    </Typography>
+                        :
+                    // Else if all values are being passed into the component(Being used at the main component/current weather)
+                    // Display normal, hero based text}
+                    <Typography gutterBottom variant="h4" component="h2" className={classes.colorOveride}>
+                        <span style={{display: 'inline-block'}}>{fahrenheit}&deg;F</span> 
+                        /
+                        <span style={{display: 'inline-block'}}>{celsius}&deg;C</span> 
+                        <span style={{display: 'block'}}>{description}</span>
+                    </Typography>}
+                    
+                    <Typography gutterBottom variant="body2" className={classes.colorOveride}>
+                        { wind ? <span style={{display: 'block'}}>Wind speed: {wind}mph</span> : null } 
+                        { humidity ? <span style={{display: 'block'}}>Humidity: {humidity}%</span> : null }
+                    </Typography>
+                </div>
+             : loadingProp}
         </Card>
     )
 };

@@ -74,20 +74,19 @@ class SearchBar extends Component {
 
     searchForLocation = () => {
     const { searchbar } = this.props;
-    const { isLoading } = this.state;
     this.setState({
-        isLoading: !isLoading,
+        isLoading: true,
         stateError: ''
     })
     this.props.fiveDayDataForecast(searchbar.values.searchbar)
         .then(() => {
             this.setState({
-                isLoading: isLoading
+                isLoading: false
             })
         }).catch(err => {
             this.setState({
                 stateError: err.response.data.message,
-                isLoading: isLoading
+                isLoading: false
             });
         })
     }

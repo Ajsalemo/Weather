@@ -91,6 +91,13 @@ const styles = theme => ({
         border: '1px solid #fff',
         backgroundColor: '#ffffff6b',
         padding: '0.3em'
+    },
+    mapSpecProp: {
+        display: 'flex',
+        justifyContent: 'center',
+        height: 'inherit',
+        flexDrection: 'column',
+        alignItems: 'center'
     }
 });
 
@@ -115,11 +122,36 @@ class Home extends Component {
         super(props)
         this.state = {
             defaultToggle: true,
-            fiveDayToggle: false
+            fiveDayToggle: false,
+            isLoading: false
         }
         this.toggleDefaultForecast = this.toggleDefaultForecast.bind(this);
         this.toggleFiveDay = this.toggleFiveDay.bind(this);
+        // Components
+        this.loadingComponent = this.loadingComponent.bind(this);
+        this.mainWeatherComponent = this.mainWeatherComponent.bind(this);
+        this.fiveDayInformation = this.fiveDayInformation.bind(this);
+        this.hourlyForecast = this.hourlyForecast.bind(this);
+        this.forecastHeader = this.forecastHeader.bind(this);
+        this.leafletMapDisplay = this.leafletMapDisplay.bind(this);
     }
+
+    componentDidMount = () => {
+        const { fiveDayData } = this.props;
+
+        if(!fiveDayData) {
+            this.setState({
+                isLoading: true
+            })
+            this.props.fiveDayDataForecast('London,uk')
+                .then(() => {
+                    this.setState({
+                        isLoading: false
+                    })
+                })
+        }
+    }
+
     // ------------------------------------------------------------------------------------------------------- //
     // Toggles styling for the current selected forecast
     toggleDefaultForecast = () => {
@@ -138,39 +170,50 @@ class Home extends Component {
 
     // ------------------------------------------------------------------------------------------------------- //
 
-    render() {
+    loadingComponent = () => {
+        const { classes } = this.props;
+        return (
+            <div className={classes.mapSpecProp}>
+                <CircularProgress />
+            </div>
+        )
+    }
+
+    // ---------------------------------- Main weather component ---------------------------------------------- //
+
+    mainWeatherComponent = () => {
         const { classes, fiveDayData } = this.props;
+        const { isLoading } = this.state;
+
+        if(!fiveDayData) {
+            return <div>..Loading</div>
+        } else {
+            return (
+                <Suspense fallback={this.loadingComponent()}>
+                    <Location 
+                        loading={!isLoading}
+                        loadingProp={this.loadingComponent()}
+                        mainPaperCard={classes.mainPaperCard}
+                        description={fiveDayData.data.list[0].weather[0].main}
+                        name={fiveDayData.data.city.name}
+                        country={fiveDayData.data.city.country}
+                        celsius={returnCelsius(fiveDayData.data.list[0].main.temp)}
+                        fahrenheit={returnRoundedNumber(fiveDayData.data.list[0].main.temp)}
+                        wind={returnRoundedNumber(fiveDayData.data.list[0].wind.speed)}
+                        humidity={fiveDayData.data.list[0].main.humidity}
+                        imageIcon={`http://openweathermap.org/img/w/${fiveDayData.data.list[0].weather[0].icon}.png`}
+                    />
+                </Suspense>  
+            )
+        }
+    }
+
+    // ------------------------------- Forecast toggle header ------------------------------------------------ //
+
+    forecastHeader = () => {
+        const { classes } = this.props;
         const { defaultToggle, fiveDayToggle } = this.state;
-        const city = fiveDayData.data.city.name;
-        const country = fiveDayData.data.city.country;
-        const lat = fiveDayData.data.city.coord.lat;
-        const lon = fiveDayData.data.city.coord.lon;
-        const main = fiveDayData.data.list[0].weather[0].main;
-        let temp = fiveDayData.data.list[0].main.temp;
-
-        const loadingComponent = <div><CircularProgress /></div>
-
-        // ---------------------------------- Main weather component ---------------------------------------------- //
-
-        const mainWeatherComponent =  
-            fiveDayData.data ?
-            <Suspense fallback={loadingComponent}>
-                <Location 
-                    mainPaperCard={classes.mainPaperCard}
-                    description={main}
-                    name={city}
-                    country={country}
-                    celsius={returnCelsius(temp)}
-                    fahrenheit={returnRoundedNumber(temp)}
-                    wind={returnRoundedNumber(fiveDayData.data.list[0].wind.speed)}
-                    humidity={fiveDayData.data.list[0].main.humidity}
-                    imageIcon={`http://openweathermap.org/img/w/${fiveDayData.data.list[0].weather[0].icon}.png`}
-                />
-            </Suspense> 
-            : loadingComponent    
-        // ------------------------------- Forecast toggle header ------------------------------------------------ //
-
-        const forecastHeader = 
+        return (
             <Typography variant="h6" gutterBottom className={`${classes.gridCenter} ${classes.forecastHeader}`}>
                 <span 
                     onClick={this.toggleDefaultForecast}
@@ -188,55 +231,76 @@ class Home extends Component {
                     Five Day
                 </span>
             </Typography>
-        
-        // -------------------------------------- Hourly forecast cards -------------------------------------------- //
+        )
+    }
 
-        const hourlyForecast =
-        // Loop over nested objects returned from the API which is stored in the Redux store
-        // This loop returns the Hourly forecast data
-        fiveDayData.data ?
-            Object.values(fiveDayData.data.list).map((fiveDayArrList, j) => {
-                const arrayLimit = j <= 4;
-                // If the loops index is greater than 4 or false, stop the statement
-                // This is to get the most recently hourly data - to fill 5 Card components worth of information
-                if(!arrayLimit) {
-                    return false
-                } else {
-                    return (          
-                        <Suspense fallback={loadingComponent} key={j}>
-                            <Location 
-                                mainPaperCard={classes.mainPaperCard}
-                                defaultToggle={defaultToggle}
-                                unixDt={fiveDayArrList.dt}
-                                forecastCard={classes.forecastCard}
-                                imageIcon={`http://openweathermap.org/img/w/${fiveDayArrList.weather[0].icon}.png`}
-                                title={fiveDayArrList.weather[0].main}
-                                description={fiveDayArrList.weather[0].main}
-                                fahrenheit={returnRoundedNumber(fiveDayArrList.main.temp)}
-                                celsius={returnCelsius(temp)}
-                            />  
-                        </Suspense>      
-                    ) 
-                }
-            }) : loadingComponent
+    // -------------------------------------- Hourly forecast cards -------------------------------------------- //
 
-        // ------------------------------------- Five day forecast cards ------------------------------------------ //
+    hourlyForecast = () => {
+        const { classes, fiveDayData } = this.props;
+        const { defaultToggle, isLoading } = this.state;
+  
+        if(!fiveDayData) {
+            return <div>..Loading</div>
+        } else {
+            return (
+                // Loop over nested objects returned from the API which is stored in the Redux store
+                // This loop returns the Hourly forecast data
+                Object.values(fiveDayData.data.list).map((fiveDayArrList, j) => {
+                    const arrayLimit = j <= 4;
+                    // If the loops index is greater than 4 or false, stop the statement
+                    // This is to get the most recently hourly data - to fill 5 Card components worth of information
+                    if(!arrayLimit) {
+                        return false
+                    } else {
+                        return (       
+                            <Suspense fallback={this.loadingComponent()} key={j}>
+                                <Location 
+                                    loading={!isLoading}
+                                    loadingProp={this.loadingComponent()}
+                                    mainPaperCard={classes.mainPaperCard}
+                                    defaultToggle={defaultToggle}
+                                    unixDt={fiveDayArrList.dt}
+                                    forecastCard={classes.forecastCard}
+                                    imageIcon={`http://openweathermap.org/img/w/${fiveDayArrList.weather[0].icon}.png`}
+                                    title={fiveDayArrList.weather[0].main}
+                                    description={fiveDayArrList.weather[0].main}
+                                    fahrenheit={returnRoundedNumber(fiveDayArrList.main.temp)}
+                                    celsius={returnCelsius(fiveDayData.data.list[0].main.temp)}
+                                />  
+                            </Suspense>  
+                        ) 
+                    }
+                })
+            )
+        }
+    }
+
+    // ------------------------------------- Five day forecast cards ------------------------------------------ //
+    fiveDayInformation = () => {
         // Loops over the object returned from the Openweathermap API - this is put stored in the Redux store
         // Pushes the iterated objects back into their own arrays to map over them
         // This is done to properly return JSX and not have the "dt_txt" key be undefined when the "includes" method is called on it
-        const fiveDayInformation =
-            fiveDayData.data ?
-            Object.values(fiveDayData.data.list).map((res, i) => {
-                const dataArray = [];
-                const time = "12:00:00";
-                dataArray.push(res);
-                return (
-                    dataArray.map((dtList, i) => {
-                        return (
-                            dtList.dt_txt.includes(time) 
-                                ? 
-                                <Suspense fallback={loadingComponent} key={i}>
+        const { classes, fiveDayData } = this.props;
+        const { defaultToggle, isLoading } = this.state;
+ 
+        if(!fiveDayData) {
+            return <div>..Loading</div>
+        } else {
+            return (
+                Object.values(fiveDayData.data.list).map((res, i) => {
+                    const dataArray = [];
+                    const time = "12:00:00";
+                    dataArray.push(res);
+                    return (
+                        dataArray.map((dtList, i) => {
+                            return (
+                                dtList.dt_txt.includes(time) 
+                                    ? 
+                                <Suspense fallback={this.loadingComponent()} key={i}>
                                     <Location   
+                                        loading={!isLoading}
+                                        loadingProp={this.loadingComponent()}
                                         mainPaperCard={classes.mainPaperCard} 
                                         defaultToggle={defaultToggle}
                                         unixDt={dtList.dt}
@@ -245,85 +309,87 @@ class Home extends Component {
                                         title={dtList.weather[0].main}
                                         description={dtList.weather[0].main}
                                         fahrenheit={returnRoundedNumber(dtList.main.temp)}
-                                        celsius={returnCelsius(temp)}
+                                        celsius={returnCelsius(fiveDayData.data.list[0].main.temp)}
                                     /> 
-                                </Suspense>                                          
-                                :
-                            null
-                        )
-                    })
-                )
-            }) : loadingComponent
+                                </Suspense>                                        
+                                : null
+                            )
+                        })
+                    )
+                })
+            )
+        }
+    }
 
-        // ------------------------------------- Leaflet interactive radar map ------------------------------------------ //
+    // ------------------------------------- Leaflet interactive radar map ------------------------------------------ //
 
-        const leafletMapDisplay =
-            <Paper style={{margin: '4em 2em 2em 2em'}}>
+    leafletMapDisplay = () => {
+        const { fiveDayData } = this.props;
+        const { isLoading } = this.state;
+
+        if(!fiveDayData) {
+            return <div>..Loading</div>
+        } else {
+            return (
+                <Paper style={{margin: '4em 2em 2em 2em'}}>
+                    <Suspense fallback={this.loadingComponent()}>
+                        <LeafletMap 
+                            loading={!isLoading}
+                            loadingProp={this.loadingComponent()}
+                            position={[fiveDayData.data.city.coord.lat, fiveDayData.data.city.coord.lon]}
+                            zoom={5}
+                            city={fiveDayData.data.city.name} 
+                            country={fiveDayData.data.city.country}
+                            lat={fiveDayData.data.city.coord.lat}
+                            lon={fiveDayData.data.city.coord.lon}
+                            main={fiveDayData.data.list[0].weather[0].main}
+                            temp={returnRoundedNumber(fiveDayData.data.list[0].main.temp)}
+                            celsius={returnCelsius(fiveDayData.data.list[0].main.temp)}
+                        />
+                    </Suspense>
+                </Paper>
+            )
+        }
+    }
             
-                <Suspense fallback={loadingComponent}>
-                    <LeafletMap 
-                        position={[lat, lon]}
-                        zoom={5}
-                        city={city} 
-                        country={country}
-                        lat={lat}
-                        lon={lon}
-                        main={main}
-                        temp={returnRoundedNumber(temp)}
-                        celsius={returnCelsius(temp)}
-                    />
-                </Suspense>
-            </Paper>
+    // ------------------------------------------------------------------------------------------------------- //
 
+    render() {
+        const { classes } = this.props;
+        const { defaultToggle } = this.state;
         // ------------------------------------------------------------------------------------------------------------------------------- //
-
         return (
             <div className={`${classes.container} ${classes.hero}`}>
-                {/* ---------------------------------------- Main Grid Container ------------------------------------------------------ */}
                 <Grid container>
-                    {/* ---------------------------------------- Main Item Container ------------------------------------------------------ */}
                     <Grid item md={12} xs={12} style={{height: '100%'}}>
-                        {/* --------------------------------------- Card Container ------------------------------------------- */}
                         <Grid 
                             direction='row'
                             container
                             style={{padding: `1.7em 5em 1em 5em`}}
                             className={`${classes.locationGrid} ${classes.gridCenter}`} 
                         >
-                            {/* ----------------------------------------- Card Item Grid --------------------------------------- */}
-                                <Grid item md={4} className={classes.gridCenter}>
-                                {mainWeatherComponent}          
-                                {/* ----------------------------------------- End Card Item Grid --------------------------------------- */}
-                                </Grid>
-                        {/* --------------------------------------- End Card Container ------------------------------------------- */}
+                            <Grid item md={4} className={classes.gridCenter}>
+                                {this.mainWeatherComponent()}          
+                            </Grid>
                         </Grid>
                         {/* ------------------------------------------ Search Component ------------------------------------------- */}
                         <SearchBar />
                         {/* ------------------------------------------------------------------------------------------------------- */}
-                    {/* ---------------------------------------- End Main Item Container -------------------------------------------- */}
                     </Grid>
-                {/* ---------------------------------------- End Main Container ------------------------------------------------------ */}
-                {/* --------------------------------- Toggle options to choose between forecast types -------------------------------- */}
                 </Grid>
                 <Grid container className={classes.forecastContainer}>
-                    {forecastHeader}
-                    {/* ------------------------------------------- End toggle options ------------------------------------------------- */}
-                    {/* -------------------------------------------- Forecast component ------------------------------------------------ */}
+                    {this.forecastHeader()}
                     <Grid item md={12} className={`${classes.forecastGrid} ${classes.gridCenter}`}>
-                        {defaultToggle ? hourlyForecast : fiveDayInformation}
-                    {/* -------------------------------------- End forecast component------------------------------------------------------ */}
+                        {defaultToggle ? this.hourlyForecast() : this.fiveDayInformation()}
                     </Grid>
-                    {/* --------------------------------------- Weather Map Component ----------------------------------------------------- */}
-
                     <Grid container direction='row' style={{justifyContent: 'center'}}>
                         <Grid item md={6} xs={12} style={{height: '400px', width: '100%'}}>
-                            {leafletMapDisplay}
+                            {this.leafletMapDisplay()}
                         </Grid>
-                    {/* ------------------------------------------- End wWeather map component ---------------------------------------------- */}
                     </Grid>
                 </Grid>
             </div>
-        )
+        )   
     }
 };
 
@@ -331,7 +397,8 @@ class Home extends Component {
 // ------------------------------------------------------------------------------------------------------- //
 const mapStateToProps = state => {
     return {
-        fiveDayData: state.fiveDayData.fiveDayDataInformation
+        fiveDayData: state.fiveDayData.fiveDayDataInformation,
+        defaultState: state.fiveDayData
     }
 }
 
