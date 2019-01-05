@@ -19,9 +19,9 @@ import { fiveDayDataForecast } from '../../redux/actions';
 // Components
 import SearchBar from '../../components/searchbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Footer from '../../components/footer';
 const Location = lazy(() => import('../../components/location'));
 const LeafletMap = lazy(() => import('../../components/leafletMap'));
-
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
@@ -388,6 +388,7 @@ class Home extends Component {
                         </Grid>
                     </Grid>
                 </Grid>
+                <Footer />
             </div>
         )   
     }
