@@ -153,9 +153,6 @@ class Home extends Component {
                     this.setState({
                         isLoading: false
                     })
-                    if(navigator.geolocation) {
-                        this.props.getLocation()
-                    } 
                 })
                     .catch(err => {
                         this.setState({
