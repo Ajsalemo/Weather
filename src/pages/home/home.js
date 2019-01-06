@@ -143,29 +143,23 @@ class Home extends Component {
         // If the redux-store is empty, load dummy data upon the initial load
         // Afterwards in the promise - prompt the user to use Geolocation, if so - return their local data
         // If not - the dummy data will be available. Users can still use the searchbar/query 
-        const { fiveDayData } = this.props;
-        if(!fiveDayData) {
-            this.setState({
-                isLoading: true
+        this.props.fiveDayDataForecast('London,uk')
+            .then(() => {
+                this.setState({
+                    isLoading: false
+                })
+                if(navigator.geolocation) {
+                    this.props.getLocation()
+                } else {
+                    return;
+                }
             })
-            this.props.fiveDayDataForecast('London,uk')
-                .then(() => {
+                .catch(err => {
                     this.setState({
                         isLoading: false
-                    })
-                    if(navigator.geolocation) {
-                        this.props.getLocation()
-                    } else {
-                        return;
-                    }
+                    });
+                    return err;
                 })
-                    .catch(err => {
-                        this.setState({
-                            isLoading: false
-                        });
-                        return err;
-                    })
-        }
     }
 
     // ------------------------------------------------------------------------------------------------------- //
