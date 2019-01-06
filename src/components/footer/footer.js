@@ -2,6 +2,7 @@
 // ------------------------------------------------------------------------------------------------------- //
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 // Material UI components
 import { withStyles } from '@material-ui/styles';
@@ -20,6 +21,12 @@ const styles = {
     },
     iconColorOveride: {
         color: '#fff'
+    },
+    locationOff: {
+        color: 'red'
+    },
+    locationOn: {
+        color: '#2347bd'
     },
     selectedIcon: {
         color: '#43bedf'
@@ -45,7 +52,7 @@ class Footer extends Component {
     }
     
     render() {
-    const { classes } = this.props;
+    const { classes, locationEnabled } = this.props;
     const { value } = this.state;
 
     return (
@@ -55,34 +62,48 @@ class Footer extends Component {
         showLabels={false}
         className={classes.root}
         >
-        <BottomNavigationAction 
-            label="Scroll to top" 
-            icon={<ArrowUpward />} 
-            classes={{
-                iconOnly: classes.iconColorOveride
-            }}
-            onClick={this.ScrollTop.bind(this)}
-        />
-        <BottomNavigationAction 
-            label="Code" 
-            icon={<Code />} 
-            classes={{
-                iconOnly: classes.iconColorOveride
-            }}
-            href="https://github.com/Ajsalemo/React-MaterialUI"
-            target="_blank"
-        />
-        <BottomNavigationAction 
-            label="Nearby" 
-            icon={<LocationOnIcon />} 
-            classes={{
-                iconOnly: classes.iconColorOveride
-            }}
-        />
+            <BottomNavigationAction 
+                label="Scroll to top" 
+                icon={<ArrowUpward />} 
+                classes={{
+                    iconOnly: classes.iconColorOveride
+                }}
+                onClick={this.ScrollTop.bind(this)}
+            />
+            <BottomNavigationAction 
+                label={locationEnabled ? "Location is on" : "Location is off"}
+                icon={<LocationOnIcon />} 
+                classes={{
+                    iconOnly: locationEnabled ? classes.locationOn : classes.locationOff
+                }}
+            />
+            <BottomNavigationAction 
+                label="Code" 
+                icon={<Code />} 
+                classes={{
+                    iconOnly: classes.iconColorOveride
+                }}
+                href="https://github.com/Ajsalemo/React-MaterialUI"
+                target="_blank"
+            />
         </BottomNavigation>
     );
     }
 }
+
+// ------------------------------------------------------------------------------------------------------- //
+// ------------------------------------------------------------------------------------------------------- //
+const mapStateToProps = state => {
+    return {
+        locationEnabled: state.locationPrompt.location
+    }
+}
+
+// ------------------------------------------------------------------------------------------------------- //
+
+Footer = connect(
+    mapStateToProps
+)(Footer);
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //

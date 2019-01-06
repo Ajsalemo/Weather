@@ -4,7 +4,7 @@
 import axios from 'axios';
 
 // Types
-import { SUBMIT_FIVE_DAY_FORECAST_SUCCESS } from './types';
+import { SUBMIT_FIVE_DAY_FORECAST, LOCATION_REQUEST } from './types';
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
@@ -22,7 +22,7 @@ export const fiveDayDataForecast = (query, lat, lon) => {
     return dispatch => axios.get(URL)
         .then(result => {
             dispatch({
-                type: SUBMIT_FIVE_DAY_FORECAST_SUCCESS,
+                type: SUBMIT_FIVE_DAY_FORECAST,
                 payload: result
             })
         })
@@ -37,6 +37,7 @@ export const getLocation = () => {
     return dispatch => nav.getCurrentPosition((position) => {
         const lat = `${position.coords.latitude}`;
         const lon = `${position.coords.longitude}`;
+        dispatch({ type: LOCATION_REQUEST })
         dispatch(fiveDayDataForecast(null, lat, lon))
     })
 }

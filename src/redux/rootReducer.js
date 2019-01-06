@@ -6,11 +6,13 @@ import { reducer as formReducer } from 'redux-form';
 
 // Reducers
 import fiveDayData from './fiveDayData';
+import locationPrompt from './locationPrompt';
 
 // ------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------------- //
 
 const rootReducer = combineReducers({
+    locationPrompt,
     fiveDayData,
     form: formReducer
 })

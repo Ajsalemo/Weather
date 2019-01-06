@@ -155,9 +155,7 @@ class Home extends Component {
                     })
                     if(navigator.geolocation) {
                         this.props.getLocation()
-                    } else {
-                        return;
-                    }
+                    } 
                 })
                     .catch(err => {
                         this.setState({
