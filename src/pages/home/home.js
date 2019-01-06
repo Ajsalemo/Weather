@@ -148,11 +148,6 @@ class Home extends Component {
                 this.setState({
                     isLoading: false
                 })
-                if(navigator.geolocation) {
-                    this.props.getLocation()
-                } else {
-                    return;
-                }
             })
                 .catch(err => {
                     this.setState({
@@ -160,6 +155,11 @@ class Home extends Component {
                     });
                     return err;
                 })
+        if(navigator.geolocation) {
+            this.props.getLocation()
+        } else {
+            return;
+        }
     }
 
     // ------------------------------------------------------------------------------------------------------- //
