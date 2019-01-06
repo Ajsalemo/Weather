@@ -207,7 +207,7 @@ class Home extends Component {
         const { isLoading } = this.state;
 
         if(!fiveDayData) {
-            return this.loadingComponent()
+            this.loadingComponent()
         } else {
             return (
                 <Suspense fallback={this.loadingComponent()}>
@@ -262,7 +262,7 @@ class Home extends Component {
         const { defaultToggle, isLoading } = this.state;
   
         if(!fiveDayData) {
-            return this.loadingComponent()
+            this.loadingComponent()
         } else {
             return (
                 // Loop over nested objects returned from the API which is stored in the Redux store
@@ -306,7 +306,7 @@ class Home extends Component {
         const { defaultToggle, isLoading } = this.state;
  
         if(!fiveDayData) {
-            return this.loadingComponent()
+            this.loadingComponent()
         } else {
             return (
                 Object.values(fiveDayData.data.list).map((res, i) => {
@@ -349,7 +349,7 @@ class Home extends Component {
         const { isLoading } = this.state;
 
         if(!fiveDayData) {
-            return <div>..Loading</div>
+            this.loadingComponent()
         } else {
             return (
                 <Paper style={{margin: '4em 2em 2em 2em'}}>
