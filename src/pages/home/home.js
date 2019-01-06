@@ -357,7 +357,7 @@ class Home extends Component {
                             loading={!isLoading}
                             loadingProp={this.loadingComponent()}
                             position={[fiveDayData.data.city.coord.lat, fiveDayData.data.city.coord.lon]}
-                            zoom={5}
+                            zoom={6}
                             city={fiveDayData.data.city.name} 
                             country={fiveDayData.data.city.country}
                             lat={fiveDayData.data.city.coord.lat}

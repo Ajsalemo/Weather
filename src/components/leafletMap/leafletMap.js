@@ -21,7 +21,7 @@ let LeafletMap = props => {
                         {/* -------------------------------------- Base layer ------------------------------------------------ */}
                         <TileLayer
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                            url={`https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png`}
+                            url={`http://{s}.tile.osm.org/{z}/{x}/{y}.png`}
                         />
                         {/* --------------------------------------- Cloud layer --------------------------------------- */}
                         <TileLayer
