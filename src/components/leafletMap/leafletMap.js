@@ -20,7 +20,7 @@ let LeafletMap = props => {
                     <div>
                         {/* -------------------------------------- Base layer ------------------------------------------------ */}
                         <TileLayer
-                            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                            attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
                             url={`http://{s}.tile.osm.org/{z}/{x}/{y}.png`}
                         />
                         {/* --------------------------------------- Cloud layer --------------------------------------- */}

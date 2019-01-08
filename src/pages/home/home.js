@@ -218,7 +218,7 @@ class Home extends Component {
                         fahrenheit={returnRoundedNumber(fiveDayData.data.list[0].main.temp)}
                         wind={returnRoundedNumber(fiveDayData.data.list[0].wind.speed)}
                         humidity={fiveDayData.data.list[0].main.humidity}
-                        imageIcon={`http://openweathermap.org/img/w/${fiveDayData.data.list[0].weather[0].icon}.png`}
+                        imageIcon={`https://openweathermap.org/img/w/${fiveDayData.data.list[0].weather[0].icon}.png`}
                     />
                 </Suspense>  
             )
@@ -279,7 +279,7 @@ class Home extends Component {
                                     defaultToggle={defaultToggle}
                                     unixDt={fiveDayArrList.dt}
                                     forecastCard={classes.forecastCard}
-                                    imageIcon={`http://openweathermap.org/img/w/${fiveDayArrList.weather[0].icon}.png`}
+                                    imageIcon={`https://openweathermap.org/img/w/${fiveDayArrList.weather[0].icon}.png`}
                                     title={fiveDayArrList.weather[0].main}
                                     description={fiveDayArrList.weather[0].main}
                                     fahrenheit={returnRoundedNumber(fiveDayArrList.main.temp)}
@@ -322,7 +322,7 @@ class Home extends Component {
                                         defaultToggle={defaultToggle}
                                         unixDt={dtList.dt}
                                         forecastCard={classes.forecastCard}
-                                        imageIcon={`http://openweathermap.org/img/w/${dtList.weather[0].icon}.png`}
+                                        imageIcon={`https://openweathermap.org/img/w/${dtList.weather[0].icon}.png`}
                                         title={dtList.weather[0].main}
                                         description={dtList.weather[0].main}
                                         fahrenheit={returnRoundedNumber(dtList.main.temp)}
