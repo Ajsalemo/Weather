@@ -13,21 +13,21 @@ This application is designed to prompt you for your location upon initial load -
 If declined, it will display a default city with its related information. This still gives the user the option to search for another location. 
 
 
-![Mobile view](downloads/mobileview-weather.png)
+![Mobile view](/downloads/mobileview-weather.png)
 
 
 
 ### Search
 
 
-Weather data is obtained through [Openweathermap Link](https://openweathermap.org/ "Openweathermaps API"). For now the only option to search is by location name - ex, "Charlotte, US". The API's query is set up by "City, Country". 
+Weather data is obtained through [Openweathermaps API](https://openweathermap.org/ "Openweathermaps API"). For now the only option to search is by location name - ex, "Charlotte, US". The API's query is set up by "City, Country". 
 
 ### Location
 
 
 The footer contains a location icon showing whether or not your location is enabled for the site. Blue is enabled, red is disabled. This can be changed in your Chrome settings.
 
-![Desktop view](downloads/desktopview-weather.png)
+![Desktop view](/downloads/desktopview-weather.png)
 
 
 
