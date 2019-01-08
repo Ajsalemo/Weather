@@ -140,9 +140,10 @@ class Home extends Component {
     // ------------------------------------------------------------------------------------------------------- //
 
     returnLocationComponent = () => {
-        // If the redux-store is empty, load dummy data upon the initial load
-        // Afterwards in the promise - prompt the user to use Geolocation, if so - return their local data
-        // If not - the dummy data will be available. Users can still use the searchbar/query 
+        // When this function is called after the component mounts - retrieve dummy data 
+        // This dummy data is used for a placeholder location incase the user denies location access 
+        // The Geolacation API will run afer this redux action, prompting to user to allow/block their location
+        // If the user accepts the choice, it'll display their location. If they deny it, itll load the defaut data
         this.props.fiveDayDataForecast('London,uk')
             .then(() => {
                 this.setState({
