@@ -164,7 +164,7 @@ class Home extends Component {
 
     // ------------------------------------------------------------------------------------------------------- //
 
-    componentDidMount = () => {
+    componentWillMount = () => {
         // On page load - return users location 
         this.returnLocationComponent();
     }
