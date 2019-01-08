@@ -13,7 +13,7 @@ This application is designed to prompt you for your location upon initial load -
 If declined, it will display a default city with its related information. This still gives the user the option to search for another location. 
 
 
-![Mobile view](/downloads/mobileview-weather.png)
+![](https://i.imgur.com/4nZENbj.png)
 
 
 
@@ -27,7 +27,7 @@ Weather data is obtained through [Openweathermaps API](https://openweathermap.or
 
 The footer contains a location icon showing whether or not your location is enabled for the site. Blue is enabled, red is disabled. This can be changed in your Chrome settings.
 
-![Desktop view](/downloads/desktopview-weather.png)
+![](https://i.imgur.com/1HCIV6P.png)
 
 
 
