@@ -139,35 +139,35 @@ class Home extends Component {
 
     // ------------------------------------------------------------------------------------------------------- //
 
-    // returnLocationComponent = () => {
-    //     // If the redux-store is empty, load dummy data upon the initial load
-    //     // Afterwards in the promise - prompt the user to use Geolocation, if so - return their local data
-    //     // If not - the dummy data will be available. Users can still use the searchbar/query 
-    //     this.props.fiveDayDataForecast('London,uk')
-    //         .then(() => {
-    //             this.setState({
-    //                 isLoading: false
-    //             })
-    //         })
-    //             .catch(err => {
-    //                 this.setState({
-    //                     isLoading: false
-    //                 });
-    //                 return err;
-    //             })
-    //     if(navigator.geolocation) {
-    //         this.props.getLocation()
-    //     } else {
-    //         return;
-    //     }
-    // }
+    returnLocationComponent = () => {
+        // If the redux-store is empty, load dummy data upon the initial load
+        // Afterwards in the promise - prompt the user to use Geolocation, if so - return their local data
+        // If not - the dummy data will be available. Users can still use the searchbar/query 
+        this.props.fiveDayDataForecast('London,uk')
+            .then(() => {
+                this.setState({
+                    isLoading: false
+                })
+            })
+                .catch(err => {
+                    this.setState({
+                        isLoading: false
+                    });
+                    return err;
+                })
+        if(navigator.geolocation) {
+            this.props.getLocation()
+        } else {
+            return;
+        }
+    }
 
-    // // ------------------------------------------------------------------------------------------------------- //
+    // ------------------------------------------------------------------------------------------------------- //
 
-    // componentDidMount = () => {
-    //     // On page load - return users location 
-    //     this.returnLocationComponent();
-    // }
+    componentDidMount = () => {
+        // On page load - return users location 
+        this.returnLocationComponent();
+    }
 
     // ------------------------------------------------------------------------------------------------------- //
     // Toggles styling for the current selected forecast
