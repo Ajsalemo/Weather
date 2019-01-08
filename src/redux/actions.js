@@ -14,9 +14,9 @@ export const fiveDayDataForecast = (query, lat, lon) => {
     const OWM_API_KEY = process.env.REACT_APP_WEATHER_API_URL;
     // Change URL structure depending on what is recieved through this action creator
     if(query) {
-        URL = `http://api.openweathermap.org/data/2.5/forecast?q=${query}&weather?q=${query}&units=imperial&appid=${OWM_API_KEY}`;
+        URL = `https://api.openweathermap.org/data/2.5/forecast?q=${query}&weather?q=${query}&units=imperial&appid=${OWM_API_KEY}`;
     } else if(!query) {
-        URL = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&weather?lat=${lat}&lon=${lon}&units=imperial&appid=${OWM_API_KEY}`;
+        URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&weather?lat=${lat}&lon=${lon}&units=imperial&appid=${OWM_API_KEY}`;
     }
     
     return dispatch => axios.get(URL)
