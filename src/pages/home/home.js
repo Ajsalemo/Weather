@@ -146,6 +146,13 @@ class Home extends Component {
         // If the user accepts the choice, it'll display their location. If they deny it, itll load the defaut data
         this.props.fiveDayDataForecast('London,uk')
             .then(() => {
+                if(navigator.geolocation) {
+                    this.props.getLocation()
+                } else {
+                    this.setState({
+                        isLoading: false
+                    })
+                }
                 this.setState({
                     isLoading: false
                 })
@@ -156,11 +163,6 @@ class Home extends Component {
                     });
                     return err;
                 })
-        if(navigator.geolocation) {
-            this.props.getLocation()
-        } else {
-            return;
-        }
     }
 
     // ------------------------------------------------------------------------------------------------------- //
