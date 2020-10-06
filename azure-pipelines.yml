@@ -11,7 +11,7 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '5c991575-a8d7-4cb8-8982-0e0f4ad9e3d8'
-  imageRepository: 'ajsalemoweather'
+  imageRepository: 'react-weather'
   containerRegistry: 'ansalemocontainerregistry.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
