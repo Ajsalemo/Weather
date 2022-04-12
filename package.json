@@ -12,7 +12,7 @@
     "axios": "^0.21.2",
     "dotenv": "^6.2.0",
     "leaflet": "^1.4.0",
-    "moment": "^2.23.0",
+    "moment": "^2.29.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-leaflet": "^2.1.4",
